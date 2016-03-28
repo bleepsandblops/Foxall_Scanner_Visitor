@@ -1,0 +1,14 @@
+extends ../layout
+
+block content
+  .page-header
+    h2
+      i.fa.fa-building-o
+      | Foxall Scanner
+
+  h4 
+    timeline.id
+  a(class='js--scan link-scan', href='#') Scan
+  div(class="images")
+    for image in images
+      img(src= image.path)
