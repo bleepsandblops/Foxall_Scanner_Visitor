@@ -3,9 +3,12 @@ var async = require('async');
 var fs = require('fs');
 var mongoose = require('mongoose');
 
+var finished;
+var finishedHome;
+var timelinesArray = new Array();
+
 exports.getHome = function(req, res, next) {
     request = require('request');
-
 
     var ScannerImage = require('../models/ScannerImage');
     var ScannerTimeline = require('../models/ScannerTimeline');
@@ -16,33 +19,39 @@ exports.getHome = function(req, res, next) {
     }).exec(function(err, timelines) {
         if (err) return console.error(err);
         console.log(timelines);
+        timelinesArray = new Array();
+
+        finishedHome = _.after(timelines.length, function() {
+            console.log("Showing Timelines");
+            res.render('foxall/home', {
+                timelines: timelinesArray
+            })
+        });
+
         timelines.forEach(function(timeline) {
-            ScannerImage.find().sort({
+            ScannerImage.find({
+                "timelineId": timeline.id
+            }).sort({
                 time: -1
             }).exec(function(err, images) {
                 if (err) return console.error(err);
-                console.log(images);
-                res.render('foxall/home', {
-                    timeline: timeline,
-                    images: images
-                })
+
+                var date = new Date(timeline.time);
+                var hours = date.getHours();
+                var minutes = "0" + date.getMinutes();
+                var seconds = "0" + date.getSeconds();
+                var friendlyTimeline = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+                timeline.friendlyTimeline = friendlyTimeline;
+                timeline.images = images;
+                timelinesArray.push(timeline);
+                console.log(timelinesArray);
+                finishedHome();
             })
         })
         //        res.json(images);
-
     })
 
 
-    ScannerImage.find().sort({
-        time: -1
-    }).exec(function(err, images) {
-        if (err) return console.error(err);
-        console.log(images);
-
-        res.render('foxall/home', {
-            images: images
-        })
-    })
 };
 
 
@@ -81,20 +90,25 @@ exports.doScan = function(req, res, next) {
         id: timelineId
     });
 
+    timeline.save(function(err, fluffy) {
+        if (err) return console.error(err);
+        console.log('timeline finished');
+    });
+
+
     scanners.forEach(function(scanner) {
         setTimeout(function() {
             doSingleScan(scanner);
         }, scanner.delay);
     });
 
+    finished = _.after(3, function() {
+        console.log("RENDERING");
+        res.json({});
+    });
+
     function doSingleScan(scanner) {
         var scannerTime = Date.now();
-        var finished = _.after(2, function() {
-            console.log("RENDERING");
-            res.json({
-
-            });
-        });
 
         download(scanner.url, 'images/' + scanner.id + '-' + scannerTime + '.jpg', function() {
             var image = new ScannerImage({
@@ -126,8 +140,6 @@ exports.getScans = function(req, res, next) {
         time: -1
     }).exec(function(err, images) {
         if (err) return console.error(err);
-        console.log(images);
-
         res.json(images);
     })
 }

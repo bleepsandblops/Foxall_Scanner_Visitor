@@ -6,9 +6,9 @@ block content
       i.fa.fa-building-o
       | Foxall Scanner
 
-  h4 
-    timeline.id
   a(class='js--scan link-scan', href='#') Scan
-  div(class="images")
-    for image in images
-      img(src= image.path)
+  for timeline in timelines
+    h4 Taken at #{timeline.friendlyTimeline}
+    div(class="images")
+      for image in timeline.images
+        img(src= image.path)
