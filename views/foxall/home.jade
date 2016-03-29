@@ -7,6 +7,8 @@ block content
       | Foxall Scanner
 
   a(class='js--scan link-scan', href='#') Scan
+  h4(class="js--current-scan")
+  div(class="images js--current-scan-images")
   for timeline in timelines
     h4 Taken at #{timeline.friendlyTimeline}
     div(class="images")

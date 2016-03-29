@@ -8855,4 +8855,7 @@ textarea {
   .images img {
     max-height: 100%; }
 
+.js--current-scan-images {
+  display: none; }
+
 /*# sourceMappingURL=main.css.map */

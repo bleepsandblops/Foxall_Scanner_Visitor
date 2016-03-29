@@ -34,8 +34,8 @@ var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
-
 var foxallController = require('./controllers/foxall');
+
 /**
  * API keys and Passport configuration.
  */
@@ -49,6 +49,16 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
+
+
+io.on('connection', function(socket){
+  console.log('a user connected');
+});
+
+app.use(function(req,res,next){
+    req.io = io;
+    next();
+});
 
 
 /**
@@ -230,6 +240,7 @@ app.get('/doscan', foxallController.doScan);
 app.get('/getscans', foxallController.getScans);
 app.use('/images', express.static(__dirname + '/images'));
 
+app.get('/portrait', foxallController.getPortrait);
 
 /**
  * Error Handler.
@@ -239,7 +250,7 @@ app.use(errorHandler());
 /**
  * Start Express server.
  */
-app.listen(app.get('port'), function() {
+http.listen(app.get('port'), function() {
   console.log('Express server listening on port %d in %s mode', app.get('port'), app.get('env'));
 });
 

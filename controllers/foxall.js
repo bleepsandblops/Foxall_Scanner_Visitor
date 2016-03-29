@@ -7,6 +7,18 @@ var finished;
 var finishedHome;
 var timelinesArray = new Array();
 
+
+/*var express = require('express');
+
+var app = express();
+
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+                io.emit('image', 'test');
+*/
+
+
+
 exports.getHome = function(req, res, next) {
     request = require('request');
 
@@ -37,11 +49,7 @@ exports.getHome = function(req, res, next) {
                 if (err) return console.error(err);
 
                 var date = new Date(timeline.time);
-                var hours = date.getHours();
-                var minutes = "0" + date.getMinutes();
-                var seconds = "0" + date.getSeconds();
-                var friendlyTimeline = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-                timeline.friendlyTimeline = friendlyTimeline;
+                timeline.friendlyTimeline = friendlyTime(date);
                 timeline.images = images;
                 timelinesArray.push(timeline);
                 console.log(timelinesArray);
@@ -50,9 +58,15 @@ exports.getHome = function(req, res, next) {
         })
         //        res.json(images);
     })
-
-
 };
+
+function friendlyTime(date) {
+                var hours = date.getHours();
+                var minutes = "0" + date.getMinutes();
+                var seconds = "0" + date.getSeconds();
+                var friendlyTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
+return friendlyTime;
+}
 
 
 exports.doScan = function(req, res, next) {
@@ -72,7 +86,7 @@ exports.doScan = function(req, res, next) {
         }, {
             'id': 'scanner3',
             'url': 'http://scanner3.local/',
-            'delay': 3000
+            'delay': 2000
         }];
 
     var download = function(uri, filename, callback) {
@@ -102,8 +116,10 @@ exports.doScan = function(req, res, next) {
         }, scanner.delay);
     });
 
-    finished = _.after(3, function() {
+    finished = _.after(3, function(scannerTime) {
         console.log("RENDERING");
+        req.io.emit('imageFinished', friendlyTime(new Date(scannerTime)));
+
         res.json({});
     });
 
@@ -122,7 +138,9 @@ exports.doScan = function(req, res, next) {
             image.save(function(err, fluffy) {
                 if (err) return console.error(err);
                 console.log('kicking finished');
-                finished();
+                console.log(image.path);
+                req.io.emit('image', image.path);
+                finished(scannerTime);
             });
         });
 
@@ -143,3 +161,13 @@ exports.getScans = function(req, res, next) {
         res.json(images);
     })
 }
+
+
+
+exports.getPortrait = function(req, res, next) {
+    request = require('request');
+            res.render('foxall/portrait', {
+                
+            })
+
+};
