@@ -242,6 +242,8 @@ app.use('/images', express.static(__dirname + '/images'));
 
 app.get('/portrait', foxallController.getPortrait);
 
+app.get('/timeline/:timelineid',foxallController.getTimeline);
+
 /**
  * Error Handler.
  */

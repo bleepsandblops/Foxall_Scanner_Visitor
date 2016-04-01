@@ -73,7 +73,17 @@ textarea {
 .link-scan {
   display: block;
 }
-
+a {
+  &:hover {
+    text-decoration:underline;
+    color:black;
+}
+&:active, &:focus {
+  outline:none;
+  color:black;
+  text-decoration: none;
+}
+}
 .overlay {
       position: fixed;
     width: 100%;
@@ -106,4 +116,56 @@ img {
 
 .js--current-scan-images {
   display: none;
+}
+
+.link-timeline {
+  display: block;
+  font-size:2rem;
+  line-height: 40px;
+height:40px;
+  /*&:nth-child(4n){
+    transform: rotateX(25deg);
+  }
+
+  &:nth-child(5n){
+    transform: rotateX(50deg);
+  }*/
+}
+.timelines {
+      height: 200px;
+    overflow: hidden;
+  display: inline-block;
+}
+.timelines-viewport {
+  transform:translateY(0px);
+  transition: all 250ms ease-in-out;
+}
+.timelines-go {
+  display: inline-block;
+}
+.timelines-wrapper {
+  position: relative;
+}
+.timelines-link {
+  color:black;
+  position: absolute;
+  top:50%;
+      font-size: 2rem;
+    margin-left: 20px;
+    border: 1px solid black;
+    line-height: 55px;
+    border-radius: 30px 30px;
+    width: 60px;
+    text-align: center;
+    height: 60px;
+  transform:translateY(-50%);
+}
+
+.timelines-arrow {
+  color:black;
+      font-size: 3rem;
+    margin-right: 20px;
+    &:hover {
+      text-decoration:none;
+    }
 }
