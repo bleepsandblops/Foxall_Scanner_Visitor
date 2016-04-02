@@ -1,0 +1,12 @@
+extends ../layout
+
+block content
+  .page-header
+    h2 Publishing Rooms: Scanner Wall
+
+  div(class="images")
+    h4 Taken at 
+    a(class='link-timeline', href='/timeline/#{timeline.time}') #{timeline.friendlyTimeline} 
+    div(class="images")
+      for image in timeline.images
+        img(src= "/"+image.path)
