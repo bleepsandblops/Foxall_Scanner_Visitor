@@ -3,10 +3,13 @@ var async = require('async');
 var fs = require('fs');
 var mongoose = require('mongoose');
 
+var AWS = require('aws-sdk'); 
+
 var finished;
 var finishedHome;
 var timelinesArray = new Array();
 
+var s3 = new AWS.S3();
 
 
 exports.getHome = function(req, res, next) {
@@ -91,8 +94,9 @@ exports.doScan = function(req, res, next) {
         request.head(uri, function(err, res, body) {
             console.log('content-type:', res.headers['content-type']);
             console.log('content-length:', res.headers['content-length']);
-
             request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+
+
         });
     };
 
@@ -125,6 +129,15 @@ exports.doScan = function(req, res, next) {
         var scannerTime = Date.now();
 
         download(scanner.url, 'images/' + scanner.id + '-' + scannerTime + '.jpg', function() {
+
+            //var body = fs.createReadStream(filename).pipe(zlib.createGzip());
+            var body = fs.createReadStream('images/' + scanner.id + '-' + scannerTime + '.jpg');
+            //var s3obj = new AWS.S3({params: {Bucket: 'foxall-publishing-rooms', Key: filename}});
+            s3.upload({Body: body, Bucket: 'foxall-publishing-rooms', Key:  'images/'+scanner.id + '-' + scannerTime + '.jpg'}).
+            on('httpUploadProgress', function(evt) { console.log(evt); }).
+            send(function(err, data) { console.log(err, data) });
+
+
             var image = new ScannerImage({
                 time: scannerTime,
                 scanner: scanner.url,
