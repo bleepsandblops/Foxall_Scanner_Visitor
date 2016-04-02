@@ -218,9 +218,6 @@ exports.getTimeline = function(req, res, next) {
                 res.render('foxall/timeline', {timeline:timeline})
             })
         })
-
-
-
     })
 
 

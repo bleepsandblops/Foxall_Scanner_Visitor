@@ -14,7 +14,7 @@ block content
         for timeline in timelines
          -var newindex = index++;
           span(id="timeline-#{newindex}", data-timelineid="#{newindex}", class='link-timeline', data-link='/timeline/#{timeline.time}') #{timeline.friendlyTimeline} 
-    a(class="js--timeline-link timelines-link" href="/timeline/#{timelines[2].time}" data-timeline="0") go
+    a(class="js--timeline-link timelines-link button" href="/timeline/#{timelines[2].time}" data-timeline="0") go
   a(class="js--timelines-arrow timelines-arrow" href="" data-direction="down") &#8595;
   a(class="js--timelines-arrow timelines-arrow" href="" data-direction="up") &#8593;
   

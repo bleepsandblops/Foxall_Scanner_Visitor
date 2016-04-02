@@ -1,0 +1,16 @@
+extends ../layout
+
+block content
+  .page-header
+    h2 Publishing Rooms: Camera
+  
+  .camera-name-label Name:
+  input(type="text", name="name", class="js--camera-name camera-input")
+  a(class='js--camera-scan button camera-link-scan', href='#') Scan
+  h4(class="js--current-scan") &nbsp;
+  .camera-wrapper
+    .images.images--camera.js--current-scan-images
+
+  ol.camera-notes
+    li Your name will be used to search for your image on publishingrooms.com
+    li By submitting your image you are allowing it to be used both online and in the gallery space

@@ -34,7 +34,8 @@ var homeController = require('./controllers/home');
 var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
-var foxallController = require('./controllers/foxall');
+var scannerWallController = require('./controllers/scannerwall');
+var scannerCameraController = require('./controllers/scannercamera');
 
 /**
  * API keys and Passport configuration.
@@ -235,14 +236,19 @@ app.get('/auth/pinterest/callback', passport.authorize('pinterest', { failureRed
 * Foxall Scanner
 */
 
-app.get('/foxall', foxallController.getHome);
-app.get('/doscan', foxallController.doScan);
-app.get('/getscans', foxallController.getScans);
+app.get('/scannerwall', scannerWallController.getHome);
+app.get('/doscan', scannerWallController.doScan);
+app.get('/getscans', scannerWallController.getScans);
 app.use('/images', express.static(__dirname + '/images'));
 
-app.get('/portrait', foxallController.getPortrait);
+app.get('/portrait', scannerWallController.getPortrait);
+app.get('/timeline/:timelineid',scannerWallController.getTimeline);
 
-app.get('/timeline/:timelineid',foxallController.getTimeline);
+app.get('/camera/', scannerCameraController.getHome);
+app.get('/camera/:cameraid', scannerCameraController.getCameraScan);
+app.get('/camera/doscan/:name', scannerCameraController.doScan);
+app.get('/camera/deletescan/:name', scannerCameraController.deleteScan);
+app.get('/cameras/', scannerCameraController.getCameras);
 
 /**
  * Error Handler.

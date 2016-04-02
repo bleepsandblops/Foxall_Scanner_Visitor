@@ -1,0 +1,10 @@
+extends ../layout
+
+block content
+  .page-header
+    h2 Publishing Rooms: Camera List
+    a(href="/camera") Scan  
+    
+  for camera in cameras
+    a(class="camera-index-link", href="/camera/#{camera.time}") #{camera.name}
+

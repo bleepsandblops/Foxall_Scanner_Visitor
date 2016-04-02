@@ -8823,6 +8823,9 @@ textarea {
   border-radius: 0;
   box-shadow: 0 0 5px #ccc, inset 0 0 0 #000; }
 
+input {
+  outline: 0; }
+
 .fa {
   margin-right: 6px; }
 
@@ -8865,7 +8868,7 @@ a:active, a:focus {
     max-height: 100%; }
 
 .js--current-scan-images {
-  display: none; }
+  /*display: none;*/ }
 
 .link-timeline {
   display: block;
@@ -8895,10 +8898,8 @@ a:active, a:focus {
 .timelines-wrapper {
   position: relative; }
 
-.timelines-link {
+.button {
   color: black;
-  position: absolute;
-  top: 50%;
   font-size: 2rem;
   margin-left: 20px;
   border: 1px solid black;
@@ -8906,8 +8907,15 @@ a:active, a:focus {
   border-radius: 30px 30px;
   width: 60px;
   text-align: center;
-  height: 60px;
+  height: 60px; }
+
+.timelines-link {
+  position: absolute;
+  top: 50%;
   transform: translateY(-50%); }
+
+.camera-link-scan {
+  display: inline-block; }
 
 .timelines-arrow {
   color: black;
@@ -8915,5 +8923,43 @@ a:active, a:focus {
   margin-right: 20px; }
   .timelines-arrow:hover {
     text-decoration: none; }
+
+.images--camera {
+  white-space: initial;
+  width: 800px;
+  height: auto; }
+  .images--camera img {
+    height: auto;
+    max-height: initial;
+    display: inline-block;
+    width: 50%; }
+
+.camera-link, .wall-link {
+  display: inline-block;
+  font-size: 1.5rem;
+  margin-right: 10px;
+  color: black; }
+
+.camera-name-label {
+  display: inline-block;
+  font-size: 2rem;
+  border-bottom: 1px solid black;
+  margin-right: 20px; }
+
+.camera-input {
+  border: 0;
+  border-bottom: 1px solid black;
+  font-size: 2rem; }
+
+.camera-notes {
+  margin-top: 50px; }
+
+.scan-validation-link {
+  margin-right: 10px;
+  color: black; }
+
+.camera-index-link {
+  display: block;
+  color: black; }
 
 /*# sourceMappingURL=main.css.map */

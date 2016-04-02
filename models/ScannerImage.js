@@ -5,7 +5,8 @@ var imageSchema = mongoose.Schema({
     scanner: String,
     installation: Number,
     path: String,
-    timelineId: String
+    timelineId: String,
+    cameraId: String
 });
 
 imageSchema.methods.dump = function() {

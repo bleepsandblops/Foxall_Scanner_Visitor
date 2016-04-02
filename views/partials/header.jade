@@ -7,16 +7,16 @@
         span.icon-bar
         span.icon-bar
       a.navbar-brand(href='/')
-        i.fa.fa-cube
-        | Project name
+        i.fa.fa-print
+        | Publishing Rooms
     .collapse.navbar-collapse
       ul.nav.navbar-nav
         li(class=(title == 'Home') ? 'active' : undefined)
           a(href='/') Home
-        li(class=(title == 'API Examples') ? 'active' : undefined)
-          a(href='/api') API Examples
-        li(class=(title == 'Contact') ? 'active' : undefined)
-          a(href='/contact') Contact
+        li(class=(title == 'Scanner Camera') ? 'active' : undefined)
+          a(href='/cameras') Scanner Camera
+        li(class=(title == 'Scanner Wall') ? 'active' : undefined)
+          a(href='/scannerwall') Scanner Wall
       ul.nav.navbar-nav.navbar-right
         if !user
           li(class=(title == 'Login') ? 'active' : undefined)
