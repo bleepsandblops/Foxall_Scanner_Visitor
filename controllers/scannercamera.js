@@ -29,6 +29,9 @@ function friendlyTime(date) {
 }
 
 
+
+
+
 exports.doScan = function(req, res, next) {
     request = require('request');
     var ScannerImage = require('../models/ScannerImage');
@@ -162,9 +165,8 @@ exports.getCameraScan = function(req, res, next) {
     var ScannerCamera = require('../models/ScannerCamera');
     var ScannerImage = require('../models/ScannerImage');
 
-    console.log(req);
     ScannerCamera.find({
-        time: req.params.cameraid
+        id: req.params.cameraid
     }).sort({
         time: -1
     }).exec(function(err, camera) {
@@ -202,9 +204,11 @@ exports.getCameras = function(req, res, next) {
         time: -1
     }).exec(function(err, cameras) {
         if (err) return console.error(err);
-        
+        console.log('rpoces');
+        console.log(process.env.FOXALL_ENV);
             res.render('foxall/camerasList', {
-                cameras: cameras
+                cameras: cameras,
+                env: process.env.FOXALL_ENV
             })
         
 

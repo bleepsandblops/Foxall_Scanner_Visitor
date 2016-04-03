@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var timelineSchema = mongoose.Schema({
     id: String,
-    time: Number
+    time: Date
 });
 
 timelineSchema.methods.dump = function() {

@@ -2,11 +2,14 @@ var _ = require('lodash');
 var async = require('async');
 var fs = require('fs');
 var mongoose = require('mongoose');
+var unique = require('array-unique');
 
 var finished;
 var finishedHome;
 var timelinesArray = new Array();
+var daysArray = new Array();
 
+var io = require('socket.io')();
 
 /*var express = require('express');
 
@@ -16,7 +19,6 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
                 io.emit('image', 'test');
 */
-
 
 
 exports.getHome = function(req, res, next) {
@@ -35,8 +37,10 @@ exports.getHome = function(req, res, next) {
 
         finishedHome = _.after(timelines.length, function() {
             console.log("Showing Timelines");
-            res.render('foxall/home', {
-                timelines: timelinesArray
+            var uniqueDays = unique(daysArray);
+            res.render('foxall/wall', {
+                timelines: timelinesArray,
+                days: uniqueDays
             })
         });
 
@@ -49,6 +53,13 @@ exports.getHome = function(req, res, next) {
                 if (err) return console.error(err);
 
                 var date = new Date(timeline.time);
+                var day = date.toDateString();
+                console.log('DAY'+day);
+                daysArray.push(day);
+
+
+                timeline.unixDate = date;
+                console.log(date);
                 timeline.friendlyTimeline = friendlyTime(date);
                 timeline.images = images;
                 timelinesArray.push(timeline);
@@ -61,15 +72,16 @@ exports.getHome = function(req, res, next) {
 };
 
 function friendlyTime(date) {
+    /*var day = date.getDate();
     var hours = date.getHours();
     var minutes = "0" + date.getMinutes();
     var seconds = "0" + date.getSeconds();
-    var friendlyTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-    return friendlyTime;
+    var friendlyTime = hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);*/
+    return date.toLocaleString();
 }
 
+exports.doWallScan = function(callbackImage, callbackFinished) {
 
-exports.doScan = function(req, res, next) {
     request = require('request');
     var ScannerImage = require('../models/ScannerImage');
     var ScannerTimeline = require('../models/ScannerTimeline');
@@ -134,9 +146,7 @@ exports.doScan = function(req, res, next) {
 
     finished = _.after(3, function(scannerTime) {
         console.log("RENDERING");
-        req.io.emit('imageFinished', {friendlyTime: friendlyTime(new Date(scannerTime)), scannerTime: scannerTime});
-
-        res.json({});
+        callbackFinished(scannerTime);
     });
 
     function doSingleScan(scanner) {
@@ -155,13 +165,54 @@ exports.doScan = function(req, res, next) {
                 if (err) return console.error(err);
                 console.log('kicking finished');
                 console.log(image.path);
-                req.io.emit('image', image.path);
+                //
+                callbackImage(image.path);
                 finished(scannerTime);
             });
         });
 
     }
 
+
+
+}
+
+exports.findDayTimelines = function(req,res,next) {
+    request = require('request');
+
+    var ScannerImage = require('../models/ScannerImage');
+    var ScannerTimeline = require('../models/ScannerTimeline');
+
+
+    ScannerTimeline.find(
+    {
+    time: {
+        $gte:req.params.day+" 00:00:00 +0000 2016",
+        $lt: req.params.day+" 23:59:59 +0000 2016"
+    }}
+        ).sort({
+        time: -1
+    }).exec(function(err, timelines) {
+        if (err) return console.error(err);
+        console.log(timelines);
+        timelinesArray = new Array();
+        res.json({timelines: timelines})
+    })
+}
+
+exports.doScan = function(req, res, next) {
+
+    exports.doWallScan(
+    function(path) {
+        req.io.emit('image', path);
+    },
+    function(scannerTime) {
+        req.io.emit('imageFinished', {
+            friendlyTime: friendlyTime(new Date(scannerTime)),
+            scannerTime: scannerTime
+        });
+        res.json({});
+    })
 
 
 }
@@ -178,12 +229,6 @@ exports.getScans = function(req, res, next) {
     })
 }
 
-
-
-exports.getPortrait = function(req, res, next) {
-    request = require('request');
-    res.render('foxall/portrait', {})
-};
 
 exports.getTimeline = function(req, res, next) {
     request = require('request');
@@ -215,7 +260,9 @@ exports.getTimeline = function(req, res, next) {
                 timelinesArray.push(timeline);
                 //console.log(timelinesArray);
                 //finishedHome();
-                res.render('foxall/timeline', {timeline:timeline})
+                res.render('foxall/timeline', {
+                    timeline: timeline
+                })
             })
         })
     })

@@ -6,6 +6,8 @@
 
 @import "themes/default/default";
 
+@import "lib/nice-select";
+
 // Scaffolding
 // -------------------------
 
@@ -162,9 +164,7 @@ height:40px;
     height: 60px;
 }
 .timelines-link {
-    position: absolute;
-  top:50%;
-  transform:translateY(-50%);
+display: inline-block;
 }
 
 .camera-link-scan {
@@ -225,4 +225,8 @@ height:40px;
 .camera-index-link {
   display: block;
   color:black;
+}
+
+.js--timeline-link {
+  display: none;
 }

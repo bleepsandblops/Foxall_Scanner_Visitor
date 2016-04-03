@@ -9,6 +9,11 @@ $(document).ready(function() {
         $('.js--current-scan').append('1 done... ');
     });
 
+    socket.on('message', function(message) {
+        console.log(message);
+        $('.message').append(message);
+    });
+
     socket.on('imageFinished', function(times) {
         console.log(times);
         $('.js--current-scan').html('Scanned at ' + times.friendlyTime);
@@ -23,6 +28,37 @@ $(document).ready(function() {
 
         $('.timelines-viewport').prepend('<span id="timeline-' + newId + '" data-timelineid="' + newId + '" data-link="/timeline/' + times.scannerTime + '" class="link-timeline">' + times.friendlyTime + '</span>');
     });
+
+    $('.js--day-select').niceSelect();
+
+    $('.js--day-select li').click(function(e) {
+        var date = $(this).data('value');
+        $.get("/scannerwall/findDayTimelines/" + date, function(data) {
+            console.log('DAY TIMELINES');
+            console.log(data);
+            data.timelines.forEach(function(timeline) {
+                var friendlyDate = new Date(timeline.time);
+                console.log(friendlyDate);
+                friendlyDate = friendlyDate.toLocaleTimeString();
+                $('.js--time-select').append('<option value="' + timeline.id + '">' + friendlyDate + '</option>');
+            })
+            $('.js--time-select').niceSelect();
+            $('.js--timeline-link').attr('href', '/timeline/' + $('.js--time-select li').first().data('value'));
+            
+            $('.js--time-select li').click(function(e) {
+                setTimeout(function() {
+                $('.js--timeline-link').attr('href', '/timeline/' + $('.js--time-select li.selected').data('value'));    
+                $('.js--timeline-link').show().css('display', 'inline-block');
+            },100) //NASTY
+                
+            });
+            
+
+        })
+            .fail(function() {
+                console.log('error');
+            });
+    })
 
 
     function doScan() {
@@ -42,7 +78,7 @@ $(document).ready(function() {
         doScan();
     })
 
-
+    /*
     $('.js--timelines-arrow').click(function(e) {
         e.preventDefault();
         var currentTimeline = $('.js--timeline-link').data('timeline');
@@ -57,7 +93,7 @@ $(document).ready(function() {
         $('.js--timeline-link').data('timeline', newTimeline);
         $('.js--timeline-link').attr('href', $('#timeline-' + newTimeline).data('link'));
     })
-
+*/
     /* Camera */
 
     $('.js--camera-scan').click(function(e) {
