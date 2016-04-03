@@ -15,40 +15,9 @@ var s3 = new AWS.S3();
 exports.getHome = function(req, res, next) {
     request = require('request');
 
-    var ScannerImage = require('../models/ScannerImage');
-    var ScannerCamera = require('../models/ScannerCamera');
-
-
-    ScannerCamera.find().sort({
-        time: -1
-    }).exec(function(err, timelines) {
-        if (err) return console.error(err);
-        console.log(timelines);
-        camerasArray = new Array();
-
-        finishedHome = _.after(timelines.length, function() {
-            res.render('foxall/cameras', {
-                timelines: camerasArray
+            res.render('foxall/cameraScan', {
             })
-        });
 
-        timelines.forEach(function(camera) {
-            ScannerImage.find({
-                "timelineId": camera.id
-            }).sort({
-                time: -1
-            }).exec(function(err, images) {
-                if (err) return console.error(err);
-
-                var date = new Date(camera.time);
-                camera.friendlyTimeline = friendlyTime(date);
-                camera.images = images;
-                camerasArray.push(camera);
-                finishedHome();
-            })
-        })
-        //        res.json(images);
-    })
 };
 
 function friendlyTime(date) {
