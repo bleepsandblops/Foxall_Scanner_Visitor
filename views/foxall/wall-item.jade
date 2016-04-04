@@ -3,8 +3,8 @@ extends ../layout
 block content
   .page-header
     h2 Scanner Wall - #{timeline.friendlyTimeline} 
-    a(class='wall-link', href='/timeline/#{timeline.time}') Link
-    a(class='wall-link', href='/timeline/#{timeline.time}') Share
+    a(class='wall-link', href='http://publishingrooms.com/timeline/#{timeline.id}') Link
+    a(class='wall-link', href='http://publishingrooms.com/timeline/#{timeline.id}') Share
   div(class="images")
     div(class="images")
       for image in timeline.images

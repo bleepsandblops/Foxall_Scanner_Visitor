@@ -20,6 +20,18 @@ var multer = require('multer');
 var upload = multer({ dest: path.join(__dirname, 'uploads') });
 
 
+
+var auth = require('http-auth');
+var basic = auth.basic({
+        realm: "Foxall"
+    }, function (username, password, callback) { // Custom authentication method.
+        callback(username === "foxall" && password === "studio");
+    }
+);
+
+
+
+
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  *
@@ -46,6 +58,7 @@ var passportConfig = require('./config/passport');
  * Create Express server.
  */
 var app = express();
+app.use(auth.connect(basic));
 
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
