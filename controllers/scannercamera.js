@@ -105,7 +105,7 @@ exports.doScan = function(req, res, next) {
             //var body = fs.createReadStream(filename).pipe(zlib.createGzip());
             var body = fs.createReadStream('images/' + scanner.id + '-' + scannerTime + '.jpg');
             //var s3obj = new AWS.S3({params: {Bucket: 'foxall-publishing-rooms', Key: filename}});
-            s3.upload({Body: body, Bucket: 'foxall-publishing-rooms', Key:  'images/'+scanner.id + '-' + scannerTime + '.jpg'}).
+            s3.upload({ACL: "public-read", Body: body, Bucket: 'foxall-publishing-rooms', Key:  'images/'+scanner.id + '-' + scannerTime + '.jpg'}).
             on('httpUploadProgress', function(evt) { console.log(evt); }).
             send(function(err, data) { console.log(err, data) });
 
