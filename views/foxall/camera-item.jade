@@ -3,8 +3,8 @@ extends ../layout
 block content
   .page-header
     h2 Scanner Camera: #{camera.name} - #{camera.friendlyTimeline} 
-    a(class='camera-link', href='/camera/#{camera.time}') Link 
-    a(class='camera-link js--camera-share', href='/camera/#{camera.time}') Share
+    a(class='camera-link', href='/camera/#{camera.id}') Link 
+    a(class='camera-link js--camera-share', href='/camera/#{camera.id}') Share
   .camera-wrapper
     .images.images--camera
       for image in camera.images

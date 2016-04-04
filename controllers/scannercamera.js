@@ -4,18 +4,18 @@ var fs = require('fs');
 var mongoose = require('mongoose');
 
 var AWS = require('aws-sdk'); 
+var s3 = new AWS.S3();
 
 var finished;
 var finishedHome;
 var timelinesArray = new Array();
 
-var s3 = new AWS.S3();
 
 
 exports.getHome = function(req, res, next) {
     request = require('request');
 
-            res.render('foxall/cameraScan', {
+            res.render('foxall/camera-scan', {
             })
 
 };
@@ -185,7 +185,7 @@ exports.getCameraScan = function(req, res, next) {
                 var date = new Date(camera.time);
                 camera.friendlyTimeline = friendlyTime(date);
                 camera.images = images;
-                res.render('foxall/camera', {camera:camera})
+                res.render('foxall/camera-item', {camera:camera})
             })
         })
     })
@@ -206,7 +206,7 @@ exports.getCameras = function(req, res, next) {
         if (err) return console.error(err);
         console.log('rpoces');
         console.log(process.env.FOXALL_ENV);
-            res.render('foxall/camerasList', {
+            res.render('foxall/camera-home', {
                 cameras: cameras,
                 env: process.env.FOXALL_ENV
             })

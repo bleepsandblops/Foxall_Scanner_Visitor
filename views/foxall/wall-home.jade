@@ -3,8 +3,8 @@ extends ../layout
 block content
   .page-header
     h2 Publishing Rooms: Scanner Wall
-
-  a(class='js--scan link-scan', href='#') Scan
+    if env == 'exhibition'
+      a(class='js--scan link-scan', href='#') Scan
   .message
   h4(class="js--current-scan")
 

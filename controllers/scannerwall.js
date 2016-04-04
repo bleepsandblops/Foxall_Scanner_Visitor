@@ -11,6 +11,9 @@ var daysArray = new Array();
 
 var io = require('socket.io')();
 
+var AWS = require('aws-sdk'); 
+var s3 = new AWS.S3();
+
 /*var express = require('express');
 
 var app = express();
@@ -31,14 +34,18 @@ exports.getHome = function(req, res, next) {
     ScannerTimeline.find().sort({
         time: -1
     }).exec(function(err, timelines) {
-        if (err) return console.error(err);
+        if (err) {res.json({})};
         console.log(timelines);
+        if (timelines.length ==0) {
+            res.render('foxall/wall-home--empty', {
+            })
+        } else {
         timelinesArray = new Array();
 
         finishedHome = _.after(timelines.length, function() {
             console.log("Showing Timelines");
             var uniqueDays = unique(daysArray);
-            res.render('foxall/wall', {
+            res.render('foxall/wall-home', {
                 timelines: timelinesArray,
                 days: uniqueDays
             })
@@ -68,6 +75,7 @@ exports.getHome = function(req, res, next) {
             })
         })
         //        res.json(images);
+        }
     })
 };
 
@@ -153,6 +161,14 @@ exports.doWallScan = function(callbackImage, callbackFinished) {
         var scannerTime = Date.now();
 
         download(scanner.url, 'images/' + scanner.id + '-' + scannerTime + '.jpg', function() {
+
+            var body = fs.createReadStream('images/' + scanner.id + '-' + scannerTime + '.jpg');
+
+            s3.upload({ACL: "public-read", Body: body, Bucket: 'foxall-publishing-rooms', Key:  'images/'+scanner.id + '-' + scannerTime + '.jpg'}).
+            on('httpUploadProgress', function(evt) { console.log(evt); }).
+            send(function(err, data) { console.log(err, data) });
+
+
             var image = new ScannerImage({
                 time: scannerTime,
                 scanner: scanner.url,
@@ -260,7 +276,7 @@ exports.getTimeline = function(req, res, next) {
                 timelinesArray.push(timeline);
                 //console.log(timelinesArray);
                 //finishedHome();
-                res.render('foxall/timeline', {
+                res.render('foxall/wall-item', {
                     timeline: timeline
                 })
             })
