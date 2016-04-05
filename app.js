@@ -254,6 +254,7 @@ app.get('/scannerwall/findDayTimelines/:day', scannerWallController.findDayTimel
 app.get('/doscan', scannerWallController.doScan);
 app.get('/getscans', scannerWallController.getScans);
 app.use('/images', express.static(__dirname + '/images'));
+app.use('/scanners', express.static(__dirname + '/scanners'));
 
 app.get('/timeline/:timelineid',scannerWallController.getTimeline);
 

@@ -109,22 +109,8 @@ exports.doWallScan = function(callbackImage, callbackFinished) {
             'delay': 2000
         }];
 */
-    var scanners =
-        [{
-            'id': 'raspberrypi',
-            'url': 'https://source.unsplash.com/random/900x600',
-            'delay': 0
-        }, {
-            'id': 'scanner2',
-            'url': 'https://source.unsplash.com/random/900x600',
-            'delay': 1000
-        }, {
-            'id': 'scanner3',
-            'url': 'https://source.unsplash.com/random/900x600',
-            'delay': 1500
-        }];
-
-
+    var scanners = JSON.parse(fs.readFileSync('scanners/scannersWall.json', 'utf8'));
+        
     var download = function(uri, filename, callback) {
         request.head(uri, function(err, res, body) {
             console.log('content-type:', res.headers['content-type']);

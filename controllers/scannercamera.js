@@ -41,25 +41,8 @@ exports.doScan = function(req, res, next) {
     console.log('name'+name);
     //var name = 'testname';
 
-    var scanners =
-        [{
-            'id': 'raspberrypi',
-            'url': 'https://source.unsplash.com/random/400x500',
-            'delay': 0
-        }, {
-            'id': 'scanner2',
-            'url': 'https://source.unsplash.com/random/400x500',
-            'delay': 1000
-        }, {
-            'id': 'scanner3',
-            'url': 'https://source.unsplash.com/random/400x500',
-            'delay': 1500
-        },
-         {
-            'id': 'scanner4',
-            'url': 'https://source.unsplash.com/random/400x500',
-            'delay': 1500
-        }];
+    var scanners = JSON.parse(fs.readFileSync('scanners/scannersCamera.json', 'utf8'));
+
 
 
     var download = function(uri, filename, callback) {
