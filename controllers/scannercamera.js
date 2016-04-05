@@ -75,7 +75,7 @@ exports.doScan = function(req, res, next) {
         }, scanner.delay);
     });
 
-    finished = _.after(4, function(scannerTime) {
+    finished = _.after(scanners.length, function(scannerTime) {
         req.io.emit('cameraImageFinished', {friendlyTime: friendlyTime(new Date(timelineId)), scannerTime: timelineId});
         res.json({});
     });
