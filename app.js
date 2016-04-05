@@ -57,18 +57,21 @@ var passportConfig = require('./config/passport');
 /**
  * Create Express server.
  */
+
+
 var app = express();
 app.use(auth.connect(basic));
 
 var http = require('http').Server(app);
-var io = require('socket.io')(http);
+/*var io = require('socket.io')(http);*/
 
 
+/*app = require('express.io')()
+app.http().io()
+*/
 
-io.on('connection', function(socket){
-  console.log('a user connected');
-});
-
+var io = require('./server/io');
+io.attach(http);
 app.use(function(req,res,next){
     req.io = io;
     next();

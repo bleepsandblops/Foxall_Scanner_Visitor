@@ -10,6 +10,7 @@ var finished;
 var finishedHome;
 var timelinesArray = new Array();
 
+var io = require('../server/io');
 
 
 exports.getHome = function(req, res, next) {
@@ -50,8 +51,6 @@ exports.doScan = function(req, res, next) {
             //console.log('content-type:', res.headers['content-type']);
             //console.log('content-length:', res.headers['content-length']);
             request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
-
-
         });
     };
 
@@ -76,7 +75,7 @@ exports.doScan = function(req, res, next) {
     });
 
     finished = _.after(scanners.length, function(scannerTime) {
-        req.io.emit('cameraImageFinished', {friendlyTime: friendlyTime(new Date(timelineId)), scannerTime: timelineId});
+        io.emit('cameraImageFinished', {friendlyTime: friendlyTime(new Date(timelineId)), scannerTime: timelineId});
         res.json({});
     });
 
