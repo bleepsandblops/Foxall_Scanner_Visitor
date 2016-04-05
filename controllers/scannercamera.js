@@ -38,7 +38,7 @@ exports.doScan = function(req, res, next) {
     var ScannerCamera = require('../models/ScannerCamera');
 
     var name = req.params.name;
-    console.log('name'+name);
+    
     //var name = 'testname';
 
     var scanners = JSON.parse(fs.readFileSync('scanners/scannersCamera.json', 'utf8'));
@@ -65,7 +65,7 @@ exports.doScan = function(req, res, next) {
 
     camera.save(function(err, fluffy) {
         if (err) return console.error(err);
-        console.log('camera finished');
+        
     });
 
 
@@ -88,10 +88,15 @@ exports.doScan = function(req, res, next) {
             //var body = fs.createReadStream(filename).pipe(zlib.createGzip());
             var body = fs.createReadStream('images/' + scanner.id + '-' + scannerTime + '.jpg');
             //var s3obj = new AWS.S3({params: {Bucket: 'foxall-publishing-rooms', Key: filename}});
+            console.log('------');
+            console.log('ABOUT TO UPLOAD TO AMAZON '+scanner.id + '-' + scannerTime);
+            console.log('------');
             s3.upload({ACL: "public-read", Body: body, Bucket: 'foxall-publishing-rooms', Key:  'images/'+scanner.id + '-' + scannerTime + '.jpg'}).
             on('httpUploadProgress', function(evt) { console.log(evt); }).
             send(function(err, data) { console.log(err, data) });
-
+            console.log('------');
+            console.log('UPLOAD FOR '+scanner.id + '-' + scannerTime+ ' FINISHED');
+            console.log('------');
 
             var image = new ScannerImage({
                 time: scannerTime,
@@ -103,8 +108,7 @@ exports.doScan = function(req, res, next) {
 
             image.save(function(err, fluffy) {
                 if (err) return console.error(err);
-                console.log('kicking finished');
-                console.log(image.path);
+
                 req.io.emit('cameraImage', image.path);
                 finished(scannerTime);
             });
@@ -119,8 +123,6 @@ exports.deleteScan = function(req, res, next) {
     var ScannerImage = require('../models/ScannerImage');
 
     var scan = req.params.name;
-    console.log('deleting');
-    console.log(scan);
     ScannerCamera.find({
         time: scan
     }).remove().exec();
@@ -153,11 +155,11 @@ exports.getCameraScan = function(req, res, next) {
     }).sort({
         time: -1
     }).exec(function(err, camera) {
-        console.log(camera);
+        
         if (err) return console.error(err);
 
         camera.forEach(function(camera) {
-            console.log(camera);
+            
             ScannerImage.find({
                 "cameraId": camera.id
             }).sort({
@@ -187,8 +189,6 @@ exports.getCameras = function(req, res, next) {
         time: -1
     }).exec(function(err, cameras) {
         if (err) return console.error(err);
-        console.log('rpoces');
-        console.log(process.env.FOXALL_ENV);
             res.render('foxall/camera-home', {
                 cameras: cameras,
                 env: process.env.FOXALL_ENV
