@@ -57,12 +57,17 @@ exports.doScan = function(req, res, next) {
                 console.log(err);
                 console.log("----------------------------------------");
                 //res.end('error');
+                scanFailed();
             }
              else {
             request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
             }
         });
     };
+
+    var scanFailed = function() {
+                        finished(0);
+    }
 
     var timelineId = Date.now();
 
@@ -73,13 +78,17 @@ exports.doScan = function(req, res, next) {
     });
 
     camera.save(function(err, fluffy) {
+        console.log('saving camera');
+        console.log(fluffy);
         if (err) return console.error(err);
         
     });
 
 
     scanners.forEach(function(scanner) {
+        console.log('in for each');
         setTimeout(function() {
+            console.log("before single scsn" + scanner);
             doSingleScan(scanner);
         }, scanner.delay);
     });
@@ -205,23 +214,6 @@ exports.getCameras = function(req, res, next) {
                 env: process.env.FOXALL_ENV
             })
         
-
-        /*cameras.forEach(function(camera) {
-            ScannerImage.find({
-                "timelineId": camera.id
-            }).sort({
-                time: -1
-            }).exec(function(err, images) {
-                if (err) return console.error(err);
-
-                var date = new Date(camera.time);
-                camera.friendlyTimeline = friendlyTime(date);
-                camera.images = images;
-                camerasArray.push(camera);
-                finishedCamera();
-            })
-        })*/
-        //        res.json(images);
     })
 
 
