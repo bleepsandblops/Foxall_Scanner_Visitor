@@ -50,7 +50,17 @@ exports.doScan = function(req, res, next) {
         request.head(uri, function(err, res, body) {
             //console.log('content-type:', res.headers['content-type']);
             //console.log('content-length:', res.headers['content-length']);
+            
+            if (err) {
+                console.log("----------------------------------------");
+                console.log("A scanner didn't reply, details below");
+                console.log(err);
+                console.log("----------------------------------------");
+                //res.end('error');
+            }
+             else {
             request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+            }
         });
     };
 
@@ -88,14 +98,16 @@ exports.doScan = function(req, res, next) {
             var body = fs.createReadStream('images/' + scanner.id + '-' + scannerTime + '.jpg');
             //var s3obj = new AWS.S3({params: {Bucket: 'foxall-publishing-rooms', Key: filename}});
             console.log('------');
-            console.log('ABOUT TO UPLOAD TO AMAZON '+scanner.id + '-' + scannerTime);
+            console.log('KICKING OFF UPLOAD TO AMAZON '+scanner.id + '-' + scannerTime);
             console.log('------');
             s3.upload({ACL: "public-read", Body: body, Bucket: 'foxall-publishing-rooms', Key:  'images/'+scanner.id + '-' + scannerTime + '.jpg'}).
-            on('httpUploadProgress', function(evt) { console.log(evt); }).
-            send(function(err, data) { console.log(err, data) });
-            console.log('------');
+            on('httpUploadProgress', function(evt) {if (evt.loaded == evt.total) {
+                            console.log('------');
             console.log('UPLOAD FOR '+scanner.id + '-' + scannerTime+ ' FINISHED');
             console.log('------');
+            } }).
+            send(function(err, data) { console.log(err, data) });
+
 
             var image = new ScannerImage({
                 time: scannerTime,
