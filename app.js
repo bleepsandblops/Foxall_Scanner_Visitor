@@ -272,7 +272,11 @@ app.get('/camera/deletescan/:name', scannerCameraController.deleteScan);
 app.get('/cameras/', scannerCameraController.getCameras);
 
 if (process.env.FOXALL_ENV == 'exhibition') {
-
+   scannerWallController.doWallScan(function() {
+          console.log("1 image received");
+    },function() {
+          console.log("Auto Timer - End of Scanner Wall");
+    });
 setInterval(function() {
     console.log("Auto Timer - Kicking off Scanner Wall");
     io.emit('wallMessage', "SCANNING IN PROGRESS");
