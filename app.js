@@ -285,7 +285,7 @@ setInterval(function() {
     },function() {
           console.log("Auto Timer - End of Scanner Wall");
     });
-}, 120000);
+}, 180000);
 }
 
   /*scannerWallController.doWallScan(function() {
