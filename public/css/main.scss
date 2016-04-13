@@ -119,6 +119,14 @@ img {
   max-height: 100%;
 }
 }
+.wall-images {
+  position: relative;
+   white-space: nowrap;
+height:300px;
+img {
+  max-height: 100%;
+}
+}
 
 .js--current-scan-images {
   /*display: none;*/
@@ -229,4 +237,76 @@ display: inline-block;
 
 .js--timeline-link {
   display: none;
+}
+
+.home-link {
+      font-size: 25px;
+    letter-spacing: 1px;
+    color: black;
+    background-color: #90C0F2;
+    width: 50%;
+    display: block;
+    padding:4px;
+    margin-left:20%;
+    margin-bottom:40px;
+    &:nth-child(2n){
+      margin-left:40%;
+      background-color:#F0DD7A;
+    }
+}
+
+body {
+  background-color: #D8D8D8;
+}
+
+footer {
+  background-color: white;
+}
+
+a {
+  color:black;
+  &:hover {
+    color:black;
+  }
+}
+
+.colour {
+      background-color: #90C0F2;
+
+}
+.colour--2 {
+        background-color:#F0DD7A;
+
+}
+.wall-message {
+  position: absolute;
+  width:100%;
+  height:100%;
+  background-color: rgba(0,0,0,0.5);
+  display: none;
+  top:0;
+  left:0;
+  z-index:5;
+}
+.wall-message-inner {
+  position: absolute;
+  top:50%;
+  left:50%;
+  color:white;
+  font-size:18px;
+  text-transform: uppercase;
+  font-family: monospace;
+  transform:translateX(-50%) translateY(-50%);
+}
+
+.scan-time {
+      font-size: 16px;
+    letter-spacing: 1px;
+    margin-top: 5px;
+    font-family: monospace;
+    margin-bottom:100px;
+}
+
+.wall-images-wrapper {
+  position: relative;
 }

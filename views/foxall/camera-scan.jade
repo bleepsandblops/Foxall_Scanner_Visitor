@@ -2,11 +2,14 @@ extends ../layout
 
 block content
   .page-header
-    h2 Publishing Rooms: Camera
+    h2 
+      a(href="/") Publishing Rooms 
+      / 
+      span(class="colour colour--#{camera}") Scanner Cam #{camera}
   
   .camera-name-label Name:
   input(type="text", name="name", class="js--camera-name camera-input")
-  a(class='js--camera-scan button camera-link-scan', href='#') Scan
+  a(class='js--camera-scan button camera-link-scan', href='#', data-camera="#{camera}") Scan
   h4(class="js--current-scan") &nbsp;
   .camera-wrapper
     .images.images--camera.js--current-scan-images

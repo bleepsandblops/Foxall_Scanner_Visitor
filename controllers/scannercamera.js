@@ -17,6 +17,7 @@ exports.getHome = function(req, res, next) {
     request = require('request');
 
             res.render('foxall/camera-scan', {
+                camera:req.params.camera
             })
 
 };
@@ -39,10 +40,11 @@ exports.doScan = function(req, res, next) {
     var ScannerCamera = require('../models/ScannerCamera');
 
     var name = req.params.name;
+    var camera = req.params.camera;
     
     //var name = 'testname';
 
-    var scanners = JSON.parse(fs.readFileSync('scanners/scannersCamera.json', 'utf8'));
+    var scanners = JSON.parse(fs.readFileSync('scanners/scannersCamera'+camera+'.json', 'utf8'));
 
 
 

@@ -1,13 +1,7 @@
 extends layout
 
 block content
-  h1 Publishing Rooms
-  p.lead Curated by Foxall
-  hr
-  .row
-    .col-sm-6
-      h2 
-        a(href='/scannerwall') Scanner Wall
-    .col-sm-6
-      h2  
-        a(href='/cameras') Scanner Camera
+  a(href='/cameras/1' class="home-link") Scanner Cam 1
+  a(href='/cameras/2' class="home-link") Scanner Cam 2
+  a(href='/bodyscan' class="home-link") Body Scan
+  a(href='/scannerwall' class="home-link") Wall Scan

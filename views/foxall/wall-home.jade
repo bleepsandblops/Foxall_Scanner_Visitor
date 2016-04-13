@@ -2,10 +2,21 @@ extends ../layout
 
 block content
   .page-header
-    h2 Publishing Rooms: Scanner Wall
+    h2
+      a(href="/") Publishing Rooms 
+      span() / 
+      span(class="colour colour--2") Wall Scan
     if env == 'exhibition'
       a(class='js--scan link-scan', href='#') Scan
-  .message
+  
+  .wall-images-wrapper
+    .wall-message
+      .wall-message-inner Scanning...
+    .wall-images.js--wall-images(data-status="done")
+      each image in timelines[1].images
+        img(src= 'https://s3-eu-west-1.amazonaws.com/foxall-publishing-rooms/'+image.path)
+  .scan-time
+  
   h4(class="js--current-scan")
 
   select.js--day-select

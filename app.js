@@ -254,7 +254,7 @@ app.get('/auth/pinterest/callback', passport.authorize('pinterest', { failureRed
 
 app.get('/scannerwall', scannerWallController.getHome);
 app.get('/scannerwall/findDayTimelines/:day', scannerWallController.findDayTimelines);
-app.get('/doscan', scannerWallController.doScan);
+//app.get('/doscan', scannerWallController.doScan);
 app.get('/getscans', scannerWallController.getScans);
 app.use('/images', express.static(__dirname + '/images'));
 app.use('/scanners', express.static(__dirname + '/scanners'));
@@ -263,30 +263,31 @@ app.get('/timeline/:timelineid',scannerWallController.getTimeline);
 
 
 app.get('/camera/:cameraid', scannerCameraController.getCameraScan);
+
 if (process.env.FOXALL_ENV == 'exhibition') {
-app.get('/camera/', scannerCameraController.getHome);
-app.get('/camera/doscan/:name', scannerCameraController.doScan);
+app.get('/cameras/:camera', scannerCameraController.getHome);
+app.get('/camera/:camera/doscan/:name', scannerCameraController.doScan);
 app.get('/camera/deletescan/:name', scannerCameraController.deleteScan);
 }
 app.get('/cameras/', scannerCameraController.getCameras);
 
-/*
+
 setInterval(function() {
     console.log("Auto Timer - Kicking off Scanner Wall");
-    io.emit('message', "SCANNING IN PROGRESS");
+    io.emit('wallMessage', "SCANNING IN PROGRESS");
     scannerWallController.doWallScan(function() {
           console.log("1 image received");
     },function() {
           console.log("Auto Timer - End of Scanner Wall");
     });
-}, 20000);
-*/
-  scannerWallController.doWallScan(function() {
+}, 120000);
+
+  /*scannerWallController.doWallScan(function() {
           console.log("1 image received");
     },function() {
           console.log("Auto Timer - End of Scanner Wall");
     });
-
+*/
 /**
  * Error Handler.
  */

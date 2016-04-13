@@ -9,9 +9,10 @@ $(document).ready(function() {
         $('.js--current-scan').append('1 done... ');
     });
 
-    socket.on('message', function(message) {
+    socket.on('wallMessage', function(message) {
         console.log(message);
-        $('.message').append(message);
+        //$('.message').append(message);
+        $('.wall-message').show();
     });
 
     socket.on('imageFinished', function(times) {
@@ -98,14 +99,16 @@ $(document).ready(function() {
 
     $('.js--camera-scan').click(function(e) {
         e.preventDefault();
-        doCameraScan();
+        var camera = $(this).data('camera');
+        doCameraScan(camera);
     })
 
-    function doCameraScan() {
+    function doCameraScan(camera) {
         var name = $('.js--camera-name').val();
         console.log(name);
+        
         $('.js--current-scan').html('Scanning...')
-        $.get("/camera/doscan/" + name, function(data) {
+        $.get("/camera/"+camera+"/doscan/" + name, function(data) {
             console.log(data);
             //alert("success");
             var time = data.time;
@@ -118,18 +121,19 @@ $(document).ready(function() {
     socket.on('cameraImage', function(path) {
         console.log('receiving image');
         console.log('<img src="' + path + '/>');
-        $('.js--current-scan-images').prepend('<img src="' + path + '"/>');
+        $('.js--current-scan-images').prepend('<img src="/' + path + '"/>');
         //$('.js--current-scan').append('1 done... ');
     });
 
     function bindScanControls() {
         $('.js--reject-camera-scan').click(function(e) {
             var scan = $(this).data('scan');
+            var camera = $(this).data('camera');
             console.log('rejecting');
             $.get("/camera/deletescan/" + scan, function(data) {
                 console.log(data);
                 $('.js--current-scan-images').empty()
-                doCameraScan();
+                doCameraScan(camera);
             })
                 .fail(function() {
                     console.log('error');
@@ -140,16 +144,31 @@ $(document).ready(function() {
 
     socket.on('cameraImageFinished', function(times) {
         console.log(times);
+        var camera = $('.js--camera-scan').data('camera');
         $('.js--current-scan').html('Scanning completed. ');
         // $('.js--current-scan').append('<a href="/camera/'+times.scannerTime+'">View Scan</a>');
         $('.js--current-scan').append('<a href="/camera/' + times.scannerTime + '" class="scan-validation-link">Accept Scan</a>');
-        $('.js--current-scan').append('<a data-scan="' + times.scannerTime + '" class="scan-validation-link js--reject-camera-scan" href="#">Re-scan</a>');
+        $('.js--current-scan').append('<a data-scan="' + times.scannerTime + '" class="scan-validation-link js--reject-camera-scan" data-camera="'+camera+'" href="#">Re-scan</a>');
         bindScanControls();
+    });
+
+    socket.on('wallSingleImage', function(path) {
+        //$('.message').html('Scanning completed at '+times.friendlyTime);
+        if ($('.js--wall-images').data('status') == 'done') {
+            
+        $('.js--wall-images').empty();
+        $('.js--wall-images').data('status', 'doing');
+    } 
+    console.log('received image single wall with path '+path);
+        $('.js--wall-images').append('<img src="/' + path + '"/>');
+    
     });
 
     socket.on('scannerWallFinished', function(times) {
         console.log(times);
-        $('.message').html('Scanning completed at '+times.friendlyTime);
+        $('.wall-message').hide();
+        $('.js--wall-images').data('status','done');
+        $('.scan-time').html('Scanning completed at '+times.friendlyTime);
     });
 
     
