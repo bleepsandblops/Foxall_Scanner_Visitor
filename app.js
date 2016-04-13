@@ -270,7 +270,7 @@ app.get('/camera/deletescan/:name', scannerCameraController.deleteScan);
 }
 app.get('/cameras/', scannerCameraController.getCameras);
 
-
+/*
 setInterval(function() {
     console.log("Auto Timer - Kicking off Scanner Wall");
     io.emit('message', "SCANNING IN PROGRESS");
@@ -280,7 +280,12 @@ setInterval(function() {
           console.log("Auto Timer - End of Scanner Wall");
     });
 }, 20000);
-
+*/
+  scannerWallController.doWallScan(function() {
+          console.log("1 image received");
+    },function() {
+          console.log("Auto Timer - End of Scanner Wall");
+    });
 
 /**
  * Error Handler.
