@@ -268,6 +268,7 @@ if (process.env.FOXALL_ENV == 'exhibition') {
 app.get('/cameras/:camera', scannerCameraController.getHome);
 app.get('/camera/:camera/doscan/:name', scannerCameraController.doScan);
 app.get('/camera/deletescan/:name', scannerCameraController.deleteScan);
+app.get('/camera/sendemail/:camera/:name', scannerCameraController.sendEmail);
 }
 app.get('/cameras/', scannerCameraController.getCameras);
 

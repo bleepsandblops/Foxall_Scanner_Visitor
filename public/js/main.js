@@ -118,6 +118,23 @@ $(document).ready(function() {
             });
     }
 
+        $('.js--camera-publish').click(function(e) {
+            e.preventDefault();
+            var camera = $(this).data('link');
+            var name = $(this).data('name');
+            $(this).fadeOut();
+            $.get("/camera/sendemail/" + camera+'/'+name, function(data) {
+
+                if (data.message == 'done') {
+                    $('.js--email-message').html("Thank you - your scan will be printed within 2 hours.");
+                }
+            })
+                .fail(function() {
+                    console.log('error');
+                });
+
+        });
+
     socket.on('cameraImage', function(path) {
         console.log('receiving image');
         console.log('<img src="' + path + '/>');
@@ -140,6 +157,7 @@ $(document).ready(function() {
                 });
 
         });
+
     }
 
     socket.on('cameraImageFinished', function(times) {

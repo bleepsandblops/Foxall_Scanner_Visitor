@@ -9162,4 +9162,21 @@ a {
   background: url(polina.jpg) no-repeat;
   background-size: cover; }
 
+.separator {
+  margin-right: 10px; }
+
+.print-link {
+  display: none; }
+
+.footer-links a {
+  margin-right: 10px; }
+
+@media print {
+  .print-link {
+    display: block; }
+  .header-links, .footer-links {
+    display: none; }
+  a[href]:after {
+    content: none !important; } }
+
 /*# sourceMappingURL=main.css.map */

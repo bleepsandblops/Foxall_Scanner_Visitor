@@ -2,9 +2,19 @@ extends ../layout
 
 block content
   .page-header
-    h2 Scanner Camera: #{camera.name} - #{camera.friendlyTimeline} 
-    a(class='camera-link', href='/camera/#{camera.id}') Link 
-    a(class='camera-link js--camera-share', href='/camera/#{camera.id}') Share
+    h2 
+      a(href="/") Publishing Rooms 
+      / Scanner Camera: 
+      span(class="colour") #{camera.name} - #{camera.friendlyTimeline} 
+    .print-link http://publishingrooms.com/camera/#{camera.id}
+    .header-links
+      a(class='camera-link', href='http://publishingrooms.com/camera/#{camera.id}') Link 
+      if env == 'exhibition'
+        a(class='camera-link js--camera-publish', href='', data-link="#{camera.id}" data-name="#{camera.name} - #{camera.friendlyTimeline}") Publish
+      span(class="separator") |
+      a(class='camera-link js--camera-share', target='_blank', href='https://twitter.com/intent/tweet?text=Publishing%20Rooms&url=http://publishingrooms.com/camera/#{camera.id}') Twitter
+      a(class='camera-link js--camera-share', target='_blank', href='https://www.facebook.com/sharer/sharer.php?t=Publishing%20Rooms&u=http://publishingrooms.com/camera/#{camera.id}') Facebook
+      .js--email-message
   .camera-wrapper
     .images.images--camera
       for image in camera.images

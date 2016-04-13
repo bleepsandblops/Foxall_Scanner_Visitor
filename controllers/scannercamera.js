@@ -11,6 +11,8 @@ var finishedHome;
 var timelinesArray = new Array();
 
 var io = require('../server/io');
+process.env.FOXALL_ENV
+var sendgrid  = require('sendgrid')(process.env.SENDGRID);
 
 
 exports.getHome = function(req, res, next) {
@@ -192,7 +194,7 @@ exports.getCameraScan = function(req, res, next) {
                 var date = new Date(camera.time);
                 camera.friendlyTimeline = friendlyTime(date);
                 camera.images = images;
-                res.render('foxall/camera-item', {camera:camera})
+                res.render('foxall/camera-item', {camera:camera, env: process.env.FOXALL_ENV})
             })
         })
     })
@@ -220,3 +222,20 @@ exports.getCameras = function(req, res, next) {
 
 
 };
+
+exports.sendEmail = function(req,res,next){
+    var camera = req.params.camera;
+    var name = req.params.name;
+    var email     = new sendgrid.Email({
+  to:       'seb@bleepsandblops.com',
+  from:     'info@foxallstudio.com',
+  subject:  'New camera scan to be published for '+name,
+  text:     'http://publishingrooms.com/camera/'+camera
+});
+sendgrid.send(email, function(err, json) {
+  if (err) { return console.error(err); }
+  console.log(json);
+  res.json({"message":"done"});
+});
+
+}
