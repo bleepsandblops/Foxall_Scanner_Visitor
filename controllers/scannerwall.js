@@ -105,10 +105,11 @@ exports.doWallScan = function(callbackImage, callbackFinished) {
                 console.log("----------------------------------------");
                 //res.end('error');
                 scanFailed();
-            }
+            } else {
 
 
             request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+            }
         });
     };
 
@@ -136,7 +137,7 @@ exports.doWallScan = function(callbackImage, callbackFinished) {
         }, scanner.delay);
     });
 
-    finished = _.after(3, function(scannerTime) {
+    finished = _.after(scanners.length, function(scannerTime) {
         console.log("RENDERING");
         io.emit('scannerWallFinished', {friendlyTime: friendlyTime(new Date(timelineId)), scannerTime: timelineId});
         callbackFinished(scannerTime);

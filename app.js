@@ -279,7 +279,7 @@ setInterval(function() {
     },function() {
           console.log("Auto Timer - End of Scanner Wall");
     });
-}, 60000);
+}, 20000);
 
 
 /**
