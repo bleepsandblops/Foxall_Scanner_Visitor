@@ -295,7 +295,7 @@ app.use(errorHandler());
 /**
  * Start Express server.
  */
-http.listen(app.get('port'), function() {
+http.listen(80, function() {
   console.log('Express server listening on port %d in %s mode', app.get('port'), app.get('env'));
 });
 
