@@ -146,4 +146,11 @@ $(document).ready(function() {
         $('.js--current-scan').append('<a data-scan="' + times.scannerTime + '" class="scan-validation-link js--reject-camera-scan" href="#">Re-scan</a>');
         bindScanControls();
     });
+
+    socket.on('scannerWallFinished', function(times) {
+        console.log(times);
+        $('.message').html('Scanning completed at '+times.friendlyTime);
+    });
+
+    
 });

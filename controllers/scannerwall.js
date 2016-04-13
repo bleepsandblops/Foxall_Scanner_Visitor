@@ -9,7 +9,7 @@ var finishedHome;
 var timelinesArray = new Array();
 var daysArray = new Array();
 
-var io = require('socket.io')();
+var io = require('../server/io');
 
 var AWS = require('aws-sdk'); 
 var s3 = new AWS.S3();
@@ -94,31 +94,29 @@ exports.doWallScan = function(callbackImage, callbackFinished) {
     var ScannerImage = require('../models/ScannerImage');
     var ScannerTimeline = require('../models/ScannerTimeline');
 
-    /*    var scanners =
-        [{
-            'id': 'raspberrypi',
-            'url': 'http://raspberrypi.local/',
-            'delay': 0
-        }, {
-            'id': 'scanner2',
-            'url': 'http://scanner2.local/',
-            'delay': 2000
-        }, {
-            'id': 'scanner3',
-            'url': 'http://scanner3.local/',
-            'delay': 2000
-        }];
-*/
     var scanners = JSON.parse(fs.readFileSync('scanners/scannersWall.json', 'utf8'));
         
     var download = function(uri, filename, callback) {
         request.head(uri, function(err, res, body) {
-            console.log('content-type:', res.headers['content-type']);
-            console.log('content-length:', res.headers['content-length']);
+            if (err) {
+                console.log("----------------------------------------");
+                console.log("A scanner didn't reply, details below");
+                console.log(err);
+                console.log("----------------------------------------");
+                //res.end('error');
+                scanFailed();
+            }
+
 
             request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
         });
     };
+
+
+    var scanFailed = function() {
+                        finished(0);
+    }
+
 
     var timelineId = Date.now();
     var timeline = new ScannerTimeline({
@@ -140,6 +138,7 @@ exports.doWallScan = function(callbackImage, callbackFinished) {
 
     finished = _.after(3, function(scannerTime) {
         console.log("RENDERING");
+        io.emit('scannerWallFinished', {friendlyTime: friendlyTime(new Date(timelineId)), scannerTime: timelineId});
         callbackFinished(scannerTime);
     });
 
@@ -151,7 +150,7 @@ exports.doWallScan = function(callbackImage, callbackFinished) {
             var body = fs.createReadStream('images/' + scanner.id + '-' + scannerTime + '.jpg');
 
             s3.upload({ACL: "public-read", Body: body, Bucket: 'foxall-publishing-rooms', Key:  'images/'+scanner.id + '-' + scannerTime + '.jpg'}).
-            on('httpUploadProgress', function(evt) { console.log(evt); }).
+            on('httpUploadProgress', function(evt) { }).
             send(function(err, data) { console.log(err, data) });
 
 
