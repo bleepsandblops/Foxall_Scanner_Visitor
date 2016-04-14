@@ -5,7 +5,10 @@ block content
   .home-logo 
     img(src="/img/prlogo.svg")
   .home-links
-    a(href='/cameras/1' class="home-link") Scanner Cam 1
-    a(href='/cameras/2' class="home-link") Scanner Cam 2
+    if env == 'exhibition'
+      a(href='/cameras/1' class="home-link") Scanner Cam 1
+      a(href='/cameras/2' class="home-link") Scanner Cam 2
+    if env == 'public'
+      a(href='/cameras' class="home-link") Scanner Cams
     a(href='/bodyscan' class="home-link") Body Scan
     a(href='/scannerwall' class="home-link") Wall Scan

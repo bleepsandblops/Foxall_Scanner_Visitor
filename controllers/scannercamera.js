@@ -111,52 +111,52 @@ exports.doScan = function(req, res, next) {
         download(scanner.url, 'images/' + scanner.id + '-' + scannerTime + '.jpg', function() {
 
 
-  Jimp.read('images/' + scanner.id + '-' + scannerTime + '.jpg', function(err, image) {
+            Jimp.read('images/' + scanner.id + '-' + scannerTime + '.jpg', function(err, image) {
                 if (err) throw err;
                 image.rotate(scanner.rotate) // resize
                 .write('images/' + scanner.id + '-' + scannerTime + '.jpg'); // save
 
 
-            //var body = fs.createReadStream(filename).pipe(zlib.createGzip());
-            var body = fs.createReadStream('images/' + scanner.id + '-' + scannerTime + '.jpg');
-            //var s3obj = new AWS.S3({params: {Bucket: 'foxall-publishing-rooms', Key: filename}});
-            console.log('------');
-            console.log('KICKING OFF UPLOAD TO AMAZON ' + scanner.id + '-' + scannerTime);
-            console.log('------');
-            s3.upload({
-                ACL: "public-read",
-                Body: body,
-                Bucket: 'foxall-publishing-rooms',
-                Key: 'images/' + scanner.id + '-' + scannerTime + '.jpg'
-            }).
-            on('httpUploadProgress', function(evt) {
-                if (evt.loaded == evt.total) {
-                    console.log('------');
-                    console.log('UPLOAD FOR ' + scanner.id + '-' + scannerTime + ' FINISHED');
-                    console.log('------');
-                }
-            }).
-            send(function(err, data) {
-                console.log(err, data)
-            });
+                //var body = fs.createReadStream(filename).pipe(zlib.createGzip());
+                var body = fs.createReadStream('images/' + scanner.id + '-' + scannerTime + '.jpg');
+                //var s3obj = new AWS.S3({params: {Bucket: 'foxall-publishing-rooms', Key: filename}});
+                console.log('------');
+                console.log('KICKING OFF UPLOAD TO AMAZON ' + scanner.id + '-' + scannerTime);
+                console.log('------');
+                s3.upload({
+                    ACL: "public-read",
+                    Body: body,
+                    Bucket: 'foxall-publishing-rooms',
+                    Key: 'images/' + scanner.id + '-' + scannerTime + '.jpg'
+                }).
+                on('httpUploadProgress', function(evt) {
+                    if (evt.loaded == evt.total) {
+                        console.log('------');
+                        console.log('UPLOAD FOR ' + scanner.id + '-' + scannerTime + ' FINISHED');
+                        console.log('------');
+                    }
+                }).
+                send(function(err, data) {
+                    console.log(err, data)
+                });
 
 
-            var image = new ScannerImage({
-                time: scannerTime,
-                scanner: scanner.url,
-                installation: 2,
-                cameraId: timelineId,
-                path: 'images/' + scanner.id + '-' + scannerTime + '.jpg'
-            });
+                var image = new ScannerImage({
+                    time: scannerTime,
+                    scanner: scanner.url,
+                    installation: 2,
+                    cameraId: timelineId,
+                    path: 'images/' + scanner.id + '-' + scannerTime + '.jpg'
+                });
 
-            image.save(function(err, fluffy) {
-                if (err) return console.error(err);
+                image.save(function(err, fluffy) {
+                    if (err) return console.error(err);
 
-                req.io.emit('cameraImage', image.path);
-                finished(scannerTime);
+                    req.io.emit('cameraImage', image.path);
+                    finished(scannerTime);
+                });
             });
         });
-});
 
     }
 }
@@ -193,35 +193,38 @@ exports.getCameraScan = function(req, res, next) {
     request = require('request');
     var ScannerCamera = require('../models/ScannerCamera');
     var ScannerImage = require('../models/ScannerImage');
+    console.log(req.params.cameraid);
+    if (req.params.cameraid != '') {
+        ScannerCamera.find({
+            id: req.params.cameraid
+        }).sort({
+            time: -1
+        }).exec(function(err, camera) {
 
-    ScannerCamera.find({
-        id: req.params.cameraid
-    }).sort({
-        time: -1
-    }).exec(function(err, camera) {
+            if (err) return console.error(err);
 
-        if (err) return console.error(err);
+            camera.forEach(function(camera) {
 
-        camera.forEach(function(camera) {
+                ScannerImage.find({
+                    "cameraId": camera.id
+                }).sort({
+                    time: -1
+                }).exec(function(err, images) {
+                    if (err) return console.error(err);
 
-            ScannerImage.find({
-                "cameraId": camera.id
-            }).sort({
-                time: -1
-            }).exec(function(err, images) {
-                if (err) return console.error(err);
-
-                var date = new Date(camera.time);
-                camera.friendlyTimeline = friendlyTime(date);
-                camera.images = images;
-                res.render('foxall/camera-item', {
-                    camera: camera,
-                    env: process.env.FOXALL_ENV
+                    var date = new Date(camera.time);
+                    camera.friendlyTimeline = friendlyTime(date);
+                    camera.images = images;
+                    res.render('foxall/camera-item', {
+                        camera: camera,
+                        env: process.env.FOXALL_ENV
+                    })
                 })
             })
         })
-    })
-
+    } else {
+        res.json({});
+    }
 
 };
 
@@ -274,7 +277,7 @@ exports.sendEmail = function(req, res, next) {
         console.log(json);
         res.json({
             "message": "done",
-            "type":type
+            "type": type
         });
     });
 

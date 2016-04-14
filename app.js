@@ -309,7 +309,7 @@ app.get('/bodyscan', scannerBodyController.getHome);
 
 
 app.get('/camera/:cameraid', scannerCameraController.getCameraScan);
-
+//app.get('/camerascan', scannerCameraController.getCameraList);
 if (process.env.FOXALL_ENV == 'exhibition') {
     app.get('/cameras/:camera', scannerCameraController.getHome);
     app.get('/camera/:camera/doscan/:name', scannerCameraController.doScan);
