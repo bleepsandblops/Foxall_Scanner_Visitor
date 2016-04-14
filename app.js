@@ -328,7 +328,7 @@ if (process.env.FOXALL_ENV == 'exhibition') {
         }, function() {
             console.log("Auto Timer - End of Scanner Wall");
         });
-    }, 30000);
+    }, 180000);
 
 }
 
