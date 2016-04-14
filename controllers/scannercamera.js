@@ -20,7 +20,8 @@ exports.getHome = function(req, res, next) {
     request = require('request');
 
     res.render('foxall/camera-scan', {
-        camera: req.params.camera
+        camera: req.params.camera,
+        env: process.env.FOXALL_ENV
     })
 
 };

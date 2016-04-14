@@ -45,7 +45,8 @@ exports.getHome = function(req, res, next) {
         };
         if (timelines.length == 0) {
             res.render('foxall/wall-home--empty', {
-                pageClass: "wall"
+                pageClass: "wall",
+                env: process.env.FOXALL_ENV
             })
         } else {
             timelinesArray = new Array();
@@ -58,7 +59,8 @@ exports.getHome = function(req, res, next) {
                     timelines: timelinesArray,
                     days: uniqueDays,
                     latestImages: latestImages,
-                    pageClass: "wall"
+                    pageClass: "wall",
+                    env: process.env.FOXALL_ENV
                 })
             });
 
@@ -310,7 +312,8 @@ exports.getTimeline = function(req, res, next) {
                 //finishedHome();
                 res.render('foxall/wall-item', {
                     timeline: timeline,
-                    pageClass: "wall"
+                    pageClass: "wall",
+                    env: process.env.FOXALL_ENV
                 })
             })
         })

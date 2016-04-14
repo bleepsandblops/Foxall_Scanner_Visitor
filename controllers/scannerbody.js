@@ -21,7 +21,7 @@ exports.getHome = function(req, res, next) {
     request = require('request');
 
     res.render('foxall/body-scan', {
-
+        env: process.env.FOXALL_ENV
     })
 
 };
