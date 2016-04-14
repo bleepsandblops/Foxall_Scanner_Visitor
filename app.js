@@ -314,7 +314,7 @@ if (process.env.FOXALL_ENV == 'exhibition') {
 app.get('/cameras/', scannerCameraController.getCameras);
 
 if (process.env.FOXALL_ENV == 'exhibition') {
-/*
+
     scannerWallController.doWallScan(function() {
         console.log("1 image received");
     }, function() {
@@ -328,8 +328,8 @@ if (process.env.FOXALL_ENV == 'exhibition') {
         }, function() {
             console.log("Auto Timer - End of Scanner Wall");
         });
-    }, 180000);
-*/
+    }, 30000);
+
 }
 
 /*scannerWallController.doWallScan(function() {

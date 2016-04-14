@@ -118,7 +118,6 @@ exports.doWallScan = function(callbackImage, callbackFinished) {
                 scanFailed();
             } else {
 
-
                 request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
             }
         });
@@ -166,6 +165,13 @@ exports.doWallScan = function(callbackImage, callbackFinished) {
   if (!err) console.log(' hooray! ');
 });*/
 
+
+                //var writeStream = fs.createWriteStream( 'images/' + scanner.id + '-' + scannerTime + '-resized.jpg');
+                gm( 'images/' + scanner.id + '-' + scannerTime + '.jpg')
+                .rotate('black', 90).quality(80)
+  .write('images/' + scanner.id + '-' + scannerTime + '.jpg', function(err){
+    if (err) return console.dir(arguments)
+    
             var body = fs.createReadStream('images/' + scanner.id + '-' + scannerTime + '.jpg');
 
             s3.upload({
@@ -196,6 +202,9 @@ exports.doWallScan = function(callbackImage, callbackFinished) {
                 callbackImage(image.path);
                 finished(scannerTime);
             });
+
+  });
+
 
 
 //pipe(fs.createWriteStream('images/' + scanner.id + '-' + scannerTime + '.jpg'));

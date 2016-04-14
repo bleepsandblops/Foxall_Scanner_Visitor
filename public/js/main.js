@@ -189,6 +189,9 @@ $(document).ready(function() {
 
             console.log('accepting');
             $('.send-modal').fadeIn();
+            setTimeout(function() {
+                location.reload();
+            },5000);
         });
 
         $('.js--camera-rescan').click(function(e) {
@@ -204,10 +207,10 @@ $(document).ready(function() {
         $('.js--current-scan').html('Scanning completed. ');
 
         $('.js--camera-publish').data('link', times.scannerTime);
-        $('.js--camera-publish').data('name', $('.js--camera-name').val() + ' ' + times.friendlyTime);
+        $('.js--camera-publish').data('name', $('.js--camera-name').val());
         
         $('.js--current-scan').append('<a data-scan="' + times.scannerTime + '" class="button button--yellow scan-validation-link js--reject-camera-scan" data-camera="' + camera + '" href="#">Re-scan</a>');
-        $('.js--current-scan').append('<a href="/camera/' + times.scannerTime + '" class="js--accept-camera-scan button scan-validation-link">Send</a>');
+        $('.js--current-scan').append('<a href="/camera/' + times.scannerTime + '" class="js--accept-camera-scan button scan-validation-link">Publish</a>');
         bindScanControls();
     });
 
