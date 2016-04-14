@@ -14,6 +14,9 @@ var io = require('../server/io');
 var AWS = require('aws-sdk');
 var s3 = new AWS.S3();
 
+var gm = require('gm');
+
+
 /*var express = require('express');
 
 var app = express();
@@ -40,7 +43,7 @@ exports.getHome = function(req, res, next) {
             res.json({})
         };
         if (timelines.length == 0) {
-            res.render('foxall/wall-home--empty', {})
+            res.render('foxall/wall-home--empty', {pageClass: "wall"})
         } else {
             timelinesArray = new Array();
             latestImages = new Array();
@@ -51,7 +54,8 @@ exports.getHome = function(req, res, next) {
                 res.render('foxall/wall-home', {
                     timelines: timelinesArray,
                     days: uniqueDays,
-                    latestImages : latestImages
+                    latestImages : latestImages,
+                    pageClass: "wall"
                 })
             });
 
@@ -157,6 +161,10 @@ exports.doWallScan = function(callbackImage, callbackFinished) {
         var scannerTime = Date.now();
 
         download(scanner.url, 'images/' + scanner.id + '-' + scannerTime + '.jpg', function() {
+            
+            /*gm('images/' + scanner.id + '-' + scannerTime + '.jpg').rotate(45).write(fs.createWriteStream, function (err) {
+  if (!err) console.log(' hooray! ');
+});*/
 
             var body = fs.createReadStream('images/' + scanner.id + '-' + scannerTime + '.jpg');
 
@@ -188,6 +196,10 @@ exports.doWallScan = function(callbackImage, callbackFinished) {
                 callbackImage(image.path);
                 finished(scannerTime);
             });
+
+
+//pipe(fs.createWriteStream('images/' + scanner.id + '-' + scannerTime + '.jpg'));
+
         });
 
     }
@@ -281,7 +293,8 @@ exports.getTimeline = function(req, res, next) {
                 //console.log(timelinesArray);
                 //finishedHome();
                 res.render('foxall/wall-item', {
-                    timeline: timeline
+                    timeline: timeline,
+                    pageClass: "wall"
                 })
             })
         })

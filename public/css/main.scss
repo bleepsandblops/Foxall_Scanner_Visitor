@@ -125,7 +125,7 @@ img {
 height:300px;
 img {
   max-height: 100%;
-  transform:rotate(90deg);
+  
 }
 }
 
@@ -258,16 +258,26 @@ display: inline-block;
 
 body {
   background-color: #D8D8D8;
+  &.wall {
+    background-color: black;
+    color:white;
+  }
 }
 
 footer {
   background-color: white;
+  .wall & {
+    background-color: black;
+  }
 }
 
 a {
   color:black;
   &:hover {
     color:black;
+  }
+  .wall & {
+    color:white;
   }
 }
 
@@ -357,3 +367,4 @@ a {
 .email-controls {
   display: none;
 }
+

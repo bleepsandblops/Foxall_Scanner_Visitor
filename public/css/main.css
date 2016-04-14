@@ -8987,8 +8987,7 @@ a:active, a.nice-select.open, a:focus {
   white-space: nowrap;
   height: 300px; }
   .wall-images img {
-    max-height: 100%;
-    transform: rotate(90deg); }
+    max-height: 100%; }
 
 .js--current-scan-images {
   /*display: none;*/ }
@@ -9102,14 +9101,21 @@ a:active, a.nice-select.open, a:focus {
 
 body {
   background-color: #D8D8D8; }
+  body.wall {
+    background-color: black;
+    color: white; }
 
 footer {
   background-color: white; }
+  .wall footer {
+    background-color: black; }
 
 a {
   color: black; }
   a:hover {
     color: black; }
+  .wall a {
+    color: white; }
 
 .colour {
   background-color: #90C0F2; }
