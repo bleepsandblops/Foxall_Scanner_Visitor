@@ -14,7 +14,7 @@ var io = require('../server/io');
 var AWS = require('aws-sdk');
 var s3 = new AWS.S3();
 
-var gm = require('gm');
+var lwip = require('lwip');
 
 
 /*var express = require('express');
@@ -43,7 +43,9 @@ exports.getHome = function(req, res, next) {
             res.json({})
         };
         if (timelines.length == 0) {
-            res.render('foxall/wall-home--empty', {pageClass: "wall"})
+            res.render('foxall/wall-home--empty', {
+                pageClass: "wall"
+            })
         } else {
             timelinesArray = new Array();
             latestImages = new Array();
@@ -54,7 +56,7 @@ exports.getHome = function(req, res, next) {
                 res.render('foxall/wall-home', {
                     timelines: timelinesArray,
                     days: uniqueDays,
-                    latestImages : latestImages,
+                    latestImages: latestImages,
                     pageClass: "wall"
                 })
             });
@@ -83,7 +85,7 @@ exports.getHome = function(req, res, next) {
                     timelinesArray.push(timeline);
                     finishedHome();
                 })
-                
+
             })
             //        res.json(images);
         }
@@ -160,54 +162,63 @@ exports.doWallScan = function(callbackImage, callbackFinished) {
         var scannerTime = Date.now();
 
         download(scanner.url, 'images/' + scanner.id + '-' + scannerTime + '.jpg', function() {
-            
+
             /*gm('images/' + scanner.id + '-' + scannerTime + '.jpg').rotate(45).write(fs.createWriteStream, function (err) {
   if (!err) console.log(' hooray! ');
 });*/
 
 
-                //var writeStream = fs.createWriteStream( 'images/' + scanner.id + '-' + scannerTime + '-resized.jpg');
-                gm( 'images/' + scanner.id + '-' + scannerTime + '.jpg')
-                .rotate('black', 90).quality(80)
-  .write('images/' + scanner.id + '-' + scannerTime + '.jpg', function(err){
-    if (err) return console.dir(arguments)
-    
-            var body = fs.createReadStream('images/' + scanner.id + '-' + scannerTime + '.jpg');
+            //var writeStream = fs.createWriteStream( 'images/' + scanner.id + '-' + scannerTime + '-resized.jpg');
 
-            s3.upload({
-                ACL: "public-read",
-                Body: body,
-                Bucket: 'foxall-publishing-rooms',
-                Key: 'images/' + scanner.id + '-' + scannerTime + '.jpg'
-            }).
-            on('httpUploadProgress', function(evt) {}).
-            send(function(err, data) {
-                console.log(err, data)
+
+            lwip.open('images/' + scanner.id + '-' + scannerTime + '.jpg', function(err, image) {
+                if (err) throw err;
+                image.rotate(90, 'black', function(err, rtdImg) {
+                    if (err) throw err;
+                    rtdImg.writeFile('images/' + scanner.id + '-' + scannerTime + '.jpg', function(err) {
+                        if (err) console.dir(err);
+
+
+                        var body = fs.createReadStream('images/' + scanner.id + '-' + scannerTime + '.jpg');
+
+                        s3.upload({
+                            ACL: "public-read",
+                            Body: body,
+                            Bucket: 'foxall-publishing-rooms',
+                            Key: 'images/' + scanner.id + '-' + scannerTime + '.jpg'
+                        }).
+                        on('httpUploadProgress', function(evt) {}).
+                        send(function(err, data) {
+                            console.log(err, data)
+                        });
+
+
+                        var image = new ScannerImage({
+                            time: scannerTime,
+                            scanner: scanner.url,
+                            installation: 1,
+                            timelineId: timelineId,
+                            path: 'images/' + scanner.id + '-' + scannerTime + '.jpg'
+                        });
+
+                        image.save(function(err, fluffy) {
+                            if (err) return console.error(err);
+                            console.log('kicking finished');
+                            console.log(image.path);
+                            io.emit('wallSingleImage', image.path);
+                            callbackImage(image.path);
+                            finished(scannerTime);
+                        });
+
+                    });
+                });
             });
 
 
-            var image = new ScannerImage({
-                time: scannerTime,
-                scanner: scanner.url,
-                installation: 1,
-                timelineId: timelineId,
-                path: 'images/' + scanner.id + '-' + scannerTime + '.jpg'
-            });
-
-            image.save(function(err, fluffy) {
-                if (err) return console.error(err);
-                console.log('kicking finished');
-                console.log(image.path);
-                io.emit('wallSingleImage', image.path);
-                callbackImage(image.path);
-                finished(scannerTime);
-            });
-
-  });
 
 
 
-//pipe(fs.createWriteStream('images/' + scanner.id + '-' + scannerTime + '.jpg'));
+            //pipe(fs.createWriteStream('images/' + scanner.id + '-' + scannerTime + '.jpg'));
 
         });
 
