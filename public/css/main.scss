@@ -112,6 +112,10 @@ a {
      
 }
 
+
+$yellow: #ffed00;
+$blue: #009fe3;
+
 .images {
       white-space: nowrap;
 height:300px;
@@ -161,16 +165,23 @@ height:40px;
 .timelines-wrapper {
   position: relative;
 }
-.button {
-  color:black;
-      font-size: 2rem;
+.button {color: black;
+    font-size: 2rem;
     margin-left: 20px;
-    border: 1px solid black;
-    line-height: 55px;
-    border-radius: 30px 30px;
-    width: 60px;
+    display: inline-block;
+    line-height: 73px;
+    border-radius: 50%;
+    width: 80px;
     text-align: center;
-    height: 60px;
+    height: 80px;
+    background-color: $blue;
+    &.button--yellow {
+      background-color: $yellow;
+    }
+}
+.camera-scan-controls {
+  line-height: 81px;
+  margin-bottom: 10px;
 }
 .timelines-link {
 display: inline-block;
@@ -212,18 +223,21 @@ display: inline-block;
   display: inline-block;
     font-size: 2rem;
     
-    border-bottom: 1px solid black;
+    
     margin-right: 20px;
 }
 
 .camera-input{
       border: 0;
-    border-bottom: 1px solid black;
+  padding-left:10px;
     font-size: 2rem;
+        line-height: 35px;
+
 }
 
 .camera-notes {
   margin-top:50px;
+  font-size:25px;
 }
 
 .scan-validation-link {
@@ -244,15 +258,15 @@ display: inline-block;
       font-size: 25px;
     letter-spacing: 1px;
     color: black;
-    background-color: #90C0F2;
-    width: 50%;
+    background-color: $blue;
+    width: 350px;
     display: block;
     padding:4px;
-    margin-left:20%;
+    text-align: center;
     margin-bottom:40px;
     &:nth-child(2n){
-      margin-left:40%;
-      background-color:#F0DD7A;
+    
+      background-color:$yellow;
     }
 }
 
@@ -280,13 +294,12 @@ a {
     color:white;
   }
 }
-
 .colour {
-      background-color: #90C0F2;
+      color: $yellow;
 
 }
 .colour--2 {
-        background-color:#F0DD7A;
+      color:$blue;
 
 }
 .wall-message {
@@ -364,7 +377,59 @@ a {
 
 }
 
-.email-controls {
+
+
+
+.home-logo, .home-links {
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform:translateX(-50%) translateY(-50%);
+}
+h2 
+{font-weight: normal;}
+
+.js--current-scan {
+  margin-left:10px;
   display: none;
+  font-weight: normal;
+  color:$blue;
+  display: inline-block;
+      margin-top: 0;
+    margin-bottom: 0;
 }
 
+.camera-notice {
+  background-color: #EED4D4;
+      margin-bottom: 20px;
+    display: inline-block;
+}
+
+.page-header {
+  margin-top:0;
+border:0;
+}
+
+.send-modal {
+  position: fixed;
+  background-color: #D8D8D8;
+  width:100%;
+  height:100%;
+  z-index:2;
+  display: none;
+      top: 0;
+    left: 0;
+
+}
+.send-modal-inner {
+
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform:translateX(-50%) translateY(-50%); 
+}
+
+.js--camera-rescan {
+      float: right;
+    margin-top: 10px;
+}

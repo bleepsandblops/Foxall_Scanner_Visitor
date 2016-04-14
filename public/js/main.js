@@ -99,15 +99,19 @@ $(document).ready(function() {
 
     $('.js--camera-scan').click(function(e) {
         e.preventDefault();
+        $(this).fadeOut(function() {
+            $('.js--current-scan').html('Scanning...')
+            $('.js--current-scan').fadeIn();
+        });
         var camera = $(this).data('camera');
+
         doCameraScan(camera);
     })
 
     function doCameraScan(camera) {
         var name = $('.js--camera-name').val();
-        console.log(name);
 
-        $('.js--current-scan').html('Scanning...')
+        
         $.get("/camera/" + camera + "/doscan/" + name, function(data) {
             console.log(data);
             //alert("success");
@@ -164,7 +168,13 @@ $(document).ready(function() {
             $.get("/camera/deletescan/" + scan, function(data) {
                 console.log(data);
                 $('.js--current-scan-images').empty()
-                doCameraScan(camera);
+                $('.js--camera-name').val('');
+                $('.js--current-scan').fadeOut(function() {
+                $('.js--camera-scan').fadeIn();    
+                });
+                
+                //doCameraScan(camera);
+
             })
                 .fail(function() {
                     console.log('error');
@@ -172,15 +182,32 @@ $(document).ready(function() {
 
         });
 
+        $('.js--accept-camera-scan').click(function(e) {
+            e.preventDefault();
+            var scan = $(this).data('scan');
+            var camera = $(this).data('camera');
+
+            console.log('accepting');
+            $('.send-modal').fadeIn();
+        });
+
+        $('.js--camera-rescan').click(function(e) {
+            location.reload();
+        })
+
+
     }
 
     socket.on('cameraImageFinished', function(times) {
         console.log(times);
         var camera = $('.js--camera-scan').data('camera');
         $('.js--current-scan').html('Scanning completed. ');
-        // $('.js--current-scan').append('<a href="/camera/'+times.scannerTime+'">View Scan</a>');
-        $('.js--current-scan').append('<a href="/camera/' + times.scannerTime + '" class="scan-validation-link">Accept Scan</a>');
-        $('.js--current-scan').append('<a data-scan="' + times.scannerTime + '" class="scan-validation-link js--reject-camera-scan" data-camera="' + camera + '" href="#">Re-scan</a>');
+
+        $('.js--camera-publish').data('link', times.scannerTime);
+        $('.js--camera-publish').data('name', $('.js--camera-name').val() + ' ' + times.friendlyTime);
+        
+        $('.js--current-scan').append('<a data-scan="' + times.scannerTime + '" class="button button--yellow scan-validation-link js--reject-camera-scan" data-camera="' + camera + '" href="#">Re-scan</a>');
+        $('.js--current-scan').append('<a href="/camera/' + times.scannerTime + '" class="js--accept-camera-scan button scan-validation-link">Send</a>');
         bindScanControls();
     });
 
