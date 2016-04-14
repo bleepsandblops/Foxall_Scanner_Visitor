@@ -110,7 +110,7 @@ exports.doScan = function(req, res, next) {
 
   Jimp.read('images/' + scanner.id + '-' + scannerTime + '.jpg', function(err, image) {
                 if (err) throw err;
-                image.rotate(90) // resize
+                image.rotate(scanner.rotate) // resize
                 .write('images/' + scanner.id + '-' + scannerTime + '.jpg'); // save
 
 
