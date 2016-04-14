@@ -81,6 +81,8 @@ $(document).ready(function() {
 
     $('.js--body-scan').click(function(e) {
         e.preventDefault();
+        console.log('body starting');
+        $('.wall-message').show();
         $.get("/bodyScan/doscan", function(data) {
             console.log(data);
             //alert("success");
@@ -179,8 +181,19 @@ $(document).ready(function() {
         $('.js--body-image-'+image.order).attr('src', image.path);
         //console.log('<img src="' + path + '/>');
         //$('.js--current-scan-images').prepend('<img src="/' + path + '"/>');
-
     });
+
+
+    socket.on('bodyImageFinished', function(image) {
+        console.log('body finished');
+      //  console.log(image);
+      $('.wall-message').hide();
+    //    $('.js--body-image-'+image.order).attr('src', image.path);
+        //console.log('<img src="' + path + '/>');
+        //$('.js--current-scan-images').prepend('<img src="/' + path + '"/>');
+    });
+
+    
 
     function bindScanControls() {
         $('.js--reject-camera-scan').click(function(e) {

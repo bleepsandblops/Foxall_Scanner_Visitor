@@ -14,12 +14,14 @@ var io = require('../server/io');
 
 var sendgrid = require('sendgrid')(process.env.SENDGRID);
 
+var Jimp = require("jimp");
+
 
 exports.getHome = function(req, res, next) {
     request = require('request');
 
     res.render('foxall/body-scan', {
-        
+
     })
 
 };
@@ -93,7 +95,7 @@ exports.doScan = function(req, res, next) {
     });
 
     finished = _.after(scanners.length, function(scannerTime) {
-        io.emit('cameraImageFinished', {
+        io.emit('bodyImageFinished', {
             friendlyTime: friendlyTime(new Date(timelineId)),
             scannerTime: timelineId
         });
@@ -105,44 +107,55 @@ exports.doScan = function(req, res, next) {
 
         download(scanner.url, 'images/' + scanner.id + '-' + scannerTime + '.jpg', function() {
 
-            //var body = fs.createReadStream(filename).pipe(zlib.createGzip());
-            var body = fs.createReadStream('images/' + scanner.id + '-' + scannerTime + '.jpg');
-            //var s3obj = new AWS.S3({params: {Bucket: 'foxall-publishing-rooms', Key: filename}});
-            console.log('------');
-            console.log('KICKING OFF UPLOAD TO AMAZON ' + scanner.id + '-' + scannerTime);
-            console.log('------');
-            s3.upload({
-                ACL: "public-read",
-                Body: body,
-                Bucket: 'foxall-publishing-rooms',
-                Key: 'images/' + scanner.id + '-' + scannerTime + '.jpg'
-            }).
-            on('httpUploadProgress', function(evt) {
-                if (evt.loaded == evt.total) {
-                    console.log('------');
-                    console.log('UPLOAD FOR ' + scanner.id + '-' + scannerTime + ' FINISHED');
-                    console.log('------');
-                }
-            }).
-            send(function(err, data) {
-                console.log(err, data)
-            });
+
+  Jimp.read('images/' + scanner.id + '-' + scannerTime + '.jpg', function(err, image) {
+                if (err) throw err;
+                image.rotate(90) // resize
+                .write('images/' + scanner.id + '-' + scannerTime + '.jpg'); // save
 
 
-            var image = new ScannerImage({
-                time: scannerTime,
-                scanner: scanner.url,
-                installation: 2,
-                cameraId: timelineId,
-                order: scanner.order,
-                path: 'images/' + scanner.id + '-' + scannerTime + '.jpg'
-            });
+                //var body = fs.createReadStream(filename).pipe(zlib.createGzip());
+                var body = fs.createReadStream('images/' + scanner.id + '-' + scannerTime + '.jpg');
+                //var s3obj = new AWS.S3({params: {Bucket: 'foxall-publishing-rooms', Key: filename}});
+                console.log('------');
+                console.log('KICKING OFF UPLOAD TO AMAZON ' + scanner.id + '-' + scannerTime);
+                console.log('------');
+                s3.upload({
+                    ACL: "public-read",
+                    Body: body,
+                    Bucket: 'foxall-publishing-rooms',
+                    Key: 'images/' + scanner.id + '-' + scannerTime + '.jpg'
+                }).
+                on('httpUploadProgress', function(evt) {
+                    if (evt.loaded == evt.total) {
+                        console.log('------');
+                        console.log('UPLOAD FOR ' + scanner.id + '-' + scannerTime + ' FINISHED');
+                        console.log('------');
+                    }
+                }).
+                send(function(err, data) {
+                    console.log(err, data)
+                });
 
-            image.save(function(err, fluffy) {
-                if (err) return console.error(err);
 
-                req.io.emit('bodyImage', {path: image.path, order: scanner.order});
-                finished(scannerTime);
+                var image = new ScannerImage({
+                    time: scannerTime,
+                    scanner: scanner.url,
+                    installation: 2,
+                    cameraId: timelineId,
+                    order: scanner.order,
+                    path: 'images/' + scanner.id + '-' + scannerTime + '.jpg'
+                });
+
+                image.save(function(err, fluffy) {
+                    if (err) return console.error(err);
+
+                    req.io.emit('bodyImage', {
+                        path: image.path,
+                        order: scanner.order
+                    });
+                    finished(scannerTime);
+                });
             });
         });
 
