@@ -78,7 +78,6 @@ exports.getHome = function(req, res, next) {
 
                     daysArray.push(day);
 
-
                     timeline.unixDate = date;
                     timeline.friendlyTimeline = friendlyTime(date);
                     timeline.images = images;
