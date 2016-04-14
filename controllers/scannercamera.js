@@ -13,6 +13,7 @@ var timelinesArray = new Array();
 var io = require('../server/io');
 process.env.FOXALL_ENV
 var sendgrid = require('sendgrid')(process.env.SENDGRID);
+var Jimp = require("jimp");
 
 
 exports.getHome = function(req, res, next) {
@@ -109,6 +110,13 @@ exports.doScan = function(req, res, next) {
 
         download(scanner.url, 'images/' + scanner.id + '-' + scannerTime + '.jpg', function() {
 
+
+  Jimp.read('images/' + scanner.id + '-' + scannerTime + '.jpg', function(err, image) {
+                if (err) throw err;
+                image.rotate(scanner.rotate) // resize
+                .write('images/' + scanner.id + '-' + scannerTime + '.jpg'); // save
+
+
             //var body = fs.createReadStream(filename).pipe(zlib.createGzip());
             var body = fs.createReadStream('images/' + scanner.id + '-' + scannerTime + '.jpg');
             //var s3obj = new AWS.S3({params: {Bucket: 'foxall-publishing-rooms', Key: filename}});
@@ -148,6 +156,7 @@ exports.doScan = function(req, res, next) {
                 finished(scannerTime);
             });
         });
+});
 
     }
 }
