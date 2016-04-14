@@ -2,8 +2,9 @@ extends ../layout
 
 block content
   .page-header
-    h2 Publishing Rooms: Camera List
-    env
+    h2 
+      a(href="/") Publishing Rooms
+      | / Camera List
     if env == 'exhibition'
       a(href="/camera") Scan  
     

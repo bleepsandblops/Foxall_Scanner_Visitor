@@ -3,7 +3,8 @@ var mongoose = require('mongoose');
 var cameraSchema = mongoose.Schema({
     id: String,
     name: String,
-    time: Date
+    time: Date,
+    installation: Number
 });
 
 cameraSchema.methods.dump = function() {

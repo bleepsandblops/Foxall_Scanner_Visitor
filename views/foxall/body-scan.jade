@@ -5,14 +5,15 @@ block content
   .page-header
     h2 
       a(href="/bodyscan") Publishing Rooms 
-      / 
+      | / 
       span(class="colour") Body Scan
   a(class="js--body-scan", href="") 
   .body-images.js--body-images
-    img(class="body-image js--body-image js--body-image-1")
-    img(class="body-image js--body-image js--body-image-2")
-    img(class="body-image js--body-image js--body-image-3")
-    img(class="body-image js--body-image js--body-image-4")  
+    img(class="body-image js--body-image js--body-image-1", src="#{images[0].path}")
+    img(class="body-image js--body-image js--body-image-2", src="#{images[1].path}")
+    img(class="body-image js--body-image js--body-image-3", src="#{images[2].path}")
+    img(class="body-image js--body-image js--body-image-4", src="#{images[3].path}")  
+
 
   video(class="site-video", autoplay, loop, src="/videos/publishingrooms.mp4")
   .wall-message

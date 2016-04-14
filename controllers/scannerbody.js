@@ -20,9 +20,44 @@ var Jimp = require("jimp");
 exports.getHome = function(req, res, next) {
     request = require('request');
 
-    res.render('foxall/body-scan', {
-        env: process.env.FOXALL_ENV
+    var ScannerCamera = require('../models/ScannerCamera');
+    var ScannerImage = require('../models/ScannerImage');
+
+
+
+    ScannerCamera.find({
+        installation: 3
+    }).sort({
+        time: -1
+    }).limit(1).exec(function(err, bodyscan) {
+        if (err) return console.error(err);
+        console.log('hello');
+        console.log(bodyscan[0].id);
+
+
+        var imagesOrdered = new Array();
+
+        ScannerImage.find({
+            "cameraId": bodyscan[0].id,
+            "installation": 3
+        }).sort({
+            time: -1
+        }).exec(function(err, images) {
+            if (err) return console.error(err);
+            /* Latest Timeline */
+            for(var i=1; i<5;i++) {
+              images.forEach(function(o){if (o.order == i) imagesOrdered.push(o);} );
+            }
+
+            console.log(images);
+            res.render('foxall/body-scan', {
+                images: imagesOrdered,
+                env: process.env.FOXALL_ENV
+            })
+        })
+
     })
+
 
 };
 
@@ -76,7 +111,8 @@ exports.doScan = function(req, res, next) {
 
     var camera = new ScannerCamera({
         time: timelineId,
-        id: timelineId
+        id: timelineId,
+        installation: 3
     });
 
     camera.save(function(err, fluffy) {
@@ -108,7 +144,7 @@ exports.doScan = function(req, res, next) {
         download(scanner.url, 'images/' + scanner.id + '-' + scannerTime + '.jpg', function() {
 
 
-  Jimp.read('images/' + scanner.id + '-' + scannerTime + '.jpg', function(err, image) {
+            Jimp.read('images/' + scanner.id + '-' + scannerTime + '.jpg', function(err, image) {
                 if (err) throw err;
                 image.rotate(scanner.rotate) // resize
                 .write('images/' + scanner.id + '-' + scannerTime + '.jpg'); // save
@@ -141,7 +177,7 @@ exports.doScan = function(req, res, next) {
                 var image = new ScannerImage({
                     time: scannerTime,
                     scanner: scanner.url,
-                    installation: 2,
+                    installation: 3,
                     cameraId: timelineId,
                     order: scanner.order,
                     path: 'images/' + scanner.id + '-' + scannerTime + '.jpg'
