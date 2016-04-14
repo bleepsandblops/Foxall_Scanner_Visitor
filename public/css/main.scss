@@ -125,6 +125,7 @@ img {
 height:300px;
 img {
   max-height: 100%;
+  transform:rotate(90deg);
 }
 }
 
@@ -351,4 +352,8 @@ a {
     content: none !important;
   }
 
+}
+
+.email-controls {
+  display: none;
 }

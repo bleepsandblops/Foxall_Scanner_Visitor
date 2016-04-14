@@ -17,18 +17,19 @@ var passport = require('passport');
 var expressValidator = require('express-validator');
 var sass = require('node-sass-middleware');
 var multer = require('multer');
-var upload = multer({ dest: path.join(__dirname, 'uploads') });
+var upload = multer({
+    dest: path.join(__dirname, 'uploads')
+});
 
 
 
 var auth = require('http-auth');
-var basic = auth.basic({
-        realm: "Foxall"
-    }, function (username, password, callback) { // Custom authentication method.
-        callback(username === "foxall" && password === "studio");
-    }
-);
-
+/*var basic = auth.basic({
+    realm: "Foxall"
+}, function(username, password, callback) { // Custom authentication method.
+    callback(username === "foxall" && password === "studio");
+});
+*/
 
 
 
@@ -37,7 +38,9 @@ var basic = auth.basic({
  *
  * Default path: .env (You can remove the path argument entirely, after renaming `.env.example` to `.env`)
  */
-dotenv.load({ path: '.env' });
+dotenv.load({
+    path: '.env'
+});
 
 /**
  * Controllers (route handlers).
@@ -60,7 +63,7 @@ var passportConfig = require('./config/passport');
 
 
 var app = express();
-app.use(auth.connect(basic));
+//app.use(auth.connect(basic));
 
 var http = require('http').Server(app);
 /*var io = require('socket.io')(http);*/
@@ -72,7 +75,7 @@ app.http().io()
 
 var io = require('./server/io');
 io.attach(http);
-app.use(function(req,res,next){
+app.use(function(req, res, next) {
     req.io = io;
     next();
 });
@@ -83,8 +86,8 @@ app.use(function(req,res,next){
  */
 mongoose.connect(process.env.MONGODB || process.env.MONGOLAB_URI);
 mongoose.connection.on('error', function() {
-  console.log('MongoDB Connection Error. Please make sure that MongoDB is running.');
-  process.exit(1);
+    console.log('MongoDB Connection Error. Please make sure that MongoDB is running.');
+    process.exit(1);
 });
 
 /**
@@ -95,47 +98,51 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.use(compress());
 app.use(sass({
-  src: path.join(__dirname, 'public'),
-  dest: path.join(__dirname, 'public'),
-  sourceMap: true
+    src: path.join(__dirname, 'public'),
+    dest: path.join(__dirname, 'public'),
+    sourceMap: true
 }));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 app.use(expressValidator());
 app.use(session({
-  resave: true,
-  saveUninitialized: true,
-  secret: process.env.SESSION_SECRET,
-  store: new MongoStore({
-    url: process.env.MONGODB || process.env.MONGOLAB_URI,
-    autoReconnect: true
-  })
+    resave: true,
+    saveUninitialized: true,
+    secret: process.env.SESSION_SECRET,
+    store: new MongoStore({
+        url: process.env.MONGODB || process.env.MONGOLAB_URI,
+        autoReconnect: true
+    })
 }));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use(function(req, res, next) {
-  if (req.path === '/api/upload') {
-    next();
-  } else {
-    lusca.csrf()(req, res, next);
-  }
+    if (req.path === '/api/upload') {
+        next();
+    } else {
+        lusca.csrf()(req, res, next);
+    }
 });
 app.use(lusca.xframe('SAMEORIGIN'));
 app.use(lusca.xssProtection(true));
 app.use(function(req, res, next) {
-  res.locals.user = req.user;
-  next();
+    res.locals.user = req.user;
+    next();
 });
 app.use(function(req, res, next) {
-  // After successful login, redirect back to /api, /contact or /
-  if (/(api)|(contact)|(^\/$)/i.test(req.path)) {
-    req.session.returnTo = req.path;
-  }
-  next();
+    // After successful login, redirect back to /api, /contact or /
+    if (/(api)|(contact)|(^\/$)/i.test(req.path)) {
+        req.session.returnTo = req.path;
+    }
+    next();
 });
-app.use(express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 }));
+app.use(express.static(path.join(__dirname, 'public'), {
+    maxAge: 31557600000
+}));
 
 /**
  * Primary app routes.
@@ -199,58 +206,92 @@ app.post('/api/pinterest', passportConfig.isAuthenticated, passportConfig.isAuth
  * OAuth authentication routes. (Sign in)
  */
 app.get('/auth/instagram', passport.authenticate('instagram'));
-app.get('/auth/instagram/callback', passport.authenticate('instagram', { failureRedirect: '/login' }), function(req, res) {
-  res.redirect(req.session.returnTo || '/');
+app.get('/auth/instagram/callback', passport.authenticate('instagram', {
+    failureRedirect: '/login'
+}), function(req, res) {
+    res.redirect(req.session.returnTo || '/');
 });
-app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email', 'user_location'] }));
-app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), function(req, res) {
-  res.redirect(req.session.returnTo || '/');
+app.get('/auth/facebook', passport.authenticate('facebook', {
+    scope: ['email', 'user_location']
+}));
+app.get('/auth/facebook/callback', passport.authenticate('facebook', {
+    failureRedirect: '/login'
+}), function(req, res) {
+    res.redirect(req.session.returnTo || '/');
 });
 app.get('/auth/github', passport.authenticate('github'));
-app.get('/auth/github/callback', passport.authenticate('github', { failureRedirect: '/login' }), function(req, res) {
-  res.redirect(req.session.returnTo || '/');
+app.get('/auth/github/callback', passport.authenticate('github', {
+    failureRedirect: '/login'
+}), function(req, res) {
+    res.redirect(req.session.returnTo || '/');
 });
-app.get('/auth/google', passport.authenticate('google', { scope: 'profile email' }));
-app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), function(req, res) {
-  res.redirect(req.session.returnTo || '/');
+app.get('/auth/google', passport.authenticate('google', {
+    scope: 'profile email'
+}));
+app.get('/auth/google/callback', passport.authenticate('google', {
+    failureRedirect: '/login'
+}), function(req, res) {
+    res.redirect(req.session.returnTo || '/');
 });
 app.get('/auth/twitter', passport.authenticate('twitter'));
-app.get('/auth/twitter/callback', passport.authenticate('twitter', { failureRedirect: '/login' }), function(req, res) {
-  res.redirect(req.session.returnTo || '/');
+app.get('/auth/twitter/callback', passport.authenticate('twitter', {
+    failureRedirect: '/login'
+}), function(req, res) {
+    res.redirect(req.session.returnTo || '/');
 });
-app.get('/auth/linkedin', passport.authenticate('linkedin', { state: 'SOME STATE' }));
-app.get('/auth/linkedin/callback', passport.authenticate('linkedin', { failureRedirect: '/login' }), function(req, res) {
-  res.redirect(req.session.returnTo || '/');
+app.get('/auth/linkedin', passport.authenticate('linkedin', {
+    state: 'SOME STATE'
+}));
+app.get('/auth/linkedin/callback', passport.authenticate('linkedin', {
+    failureRedirect: '/login'
+}), function(req, res) {
+    res.redirect(req.session.returnTo || '/');
 });
 
 /**
  * OAuth authorization routes. (API examples)
  */
 app.get('/auth/foursquare', passport.authorize('foursquare'));
-app.get('/auth/foursquare/callback', passport.authorize('foursquare', { failureRedirect: '/api' }), function(req, res) {
-  res.redirect('/api/foursquare');
+app.get('/auth/foursquare/callback', passport.authorize('foursquare', {
+    failureRedirect: '/api'
+}), function(req, res) {
+    res.redirect('/api/foursquare');
 });
 app.get('/auth/tumblr', passport.authorize('tumblr'));
-app.get('/auth/tumblr/callback', passport.authorize('tumblr', { failureRedirect: '/api' }), function(req, res) {
-  res.redirect('/api/tumblr');
+app.get('/auth/tumblr/callback', passport.authorize('tumblr', {
+    failureRedirect: '/api'
+}), function(req, res) {
+    res.redirect('/api/tumblr');
 });
-app.get('/auth/venmo', passport.authorize('venmo', { scope: 'make_payments access_profile access_balance access_email access_phone' }));
-app.get('/auth/venmo/callback', passport.authorize('venmo', { failureRedirect: '/api' }), function(req, res) {
-  res.redirect('/api/venmo');
+app.get('/auth/venmo', passport.authorize('venmo', {
+    scope: 'make_payments access_profile access_balance access_email access_phone'
+}));
+app.get('/auth/venmo/callback', passport.authorize('venmo', {
+    failureRedirect: '/api'
+}), function(req, res) {
+    res.redirect('/api/venmo');
 });
-app.get('/auth/steam', passport.authorize('openid', { state: 'SOME STATE' }));
-app.get('/auth/steam/callback', passport.authorize('openid', { failureRedirect: '/login' }), function(req, res) {
-  res.redirect(req.session.returnTo || '/');
+app.get('/auth/steam', passport.authorize('openid', {
+    state: 'SOME STATE'
+}));
+app.get('/auth/steam/callback', passport.authorize('openid', {
+    failureRedirect: '/login'
+}), function(req, res) {
+    res.redirect(req.session.returnTo || '/');
 });
-app.get('/auth/pinterest', passport.authorize('pinterest', { scope: 'read_public write_public' }));
-app.get('/auth/pinterest/callback', passport.authorize('pinterest', { failureRedirect: '/login' }), function(req, res) {
-  res.redirect('/api/pinterest');
+app.get('/auth/pinterest', passport.authorize('pinterest', {
+    scope: 'read_public write_public'
+}));
+app.get('/auth/pinterest/callback', passport.authorize('pinterest', {
+    failureRedirect: '/login'
+}), function(req, res) {
+    res.redirect('/api/pinterest');
 });
 
 
 /** 
-* Foxall Scanner
-*/
+ * Foxall Scanner
+ */
 
 app.get('/scannerwall', scannerWallController.getHome);
 app.get('/scannerwall/findDayTimelines/:day', scannerWallController.findDayTimelines);
@@ -259,37 +300,37 @@ app.get('/getscans', scannerWallController.getScans);
 app.use('/images', express.static(__dirname + '/images'));
 app.use('/scanners', express.static(__dirname + '/scanners'));
 
-app.get('/timeline/:timelineid',scannerWallController.getTimeline);
+app.get('/timeline/:timelineid', scannerWallController.getTimeline);
 
 
 app.get('/camera/:cameraid', scannerCameraController.getCameraScan);
 
 if (process.env.FOXALL_ENV == 'exhibition') {
-app.get('/cameras/:camera', scannerCameraController.getHome);
-app.get('/camera/:camera/doscan/:name', scannerCameraController.doScan);
-app.get('/camera/deletescan/:name', scannerCameraController.deleteScan);
-app.get('/camera/sendemail/:camera/:name', scannerCameraController.sendEmail);
+    app.get('/cameras/:camera', scannerCameraController.getHome);
+    app.get('/camera/:camera/doscan/:name', scannerCameraController.doScan);
+    app.get('/camera/deletescan/:name', scannerCameraController.deleteScan);
+    app.get('/camera/sendemail/:camera/:name/:type/:destination', scannerCameraController.sendEmail);
 }
 app.get('/cameras/', scannerCameraController.getCameras);
 
 if (process.env.FOXALL_ENV == 'exhibition') {
-   scannerWallController.doWallScan(function() {
-          console.log("1 image received");
-    },function() {
-          console.log("Auto Timer - End of Scanner Wall");
-    });
-setInterval(function() {
-    console.log("Auto Timer - Kicking off Scanner Wall");
-    io.emit('wallMessage', "SCANNING IN PROGRESS");
     scannerWallController.doWallScan(function() {
-          console.log("1 image received");
-    },function() {
-          console.log("Auto Timer - End of Scanner Wall");
+        console.log("1 image received");
+    }, function() {
+        console.log("Auto Timer - End of Scanner Wall");
     });
-}, 180000);
+    setInterval(function() {
+        console.log("Auto Timer - Kicking off Scanner Wall");
+        io.emit('wallMessage', "SCANNING IN PROGRESS");
+        scannerWallController.doWallScan(function() {
+            console.log("1 image received");
+        }, function() {
+            console.log("Auto Timer - End of Scanner Wall");
+        });
+    }, 180000);
 }
 
-  /*scannerWallController.doWallScan(function() {
+/*scannerWallController.doWallScan(function() {
           console.log("1 image received");
     },function() {
           console.log("Auto Timer - End of Scanner Wall");
@@ -304,7 +345,7 @@ app.use(errorHandler());
  * Start Express server.
  */
 http.listen(80, function() {
-  console.log('Express server listening on port %d in %s mode', app.get('port'), app.get('env'));
+    console.log('Express server listening on port %d in %s mode', app.get('port'), app.get('env'));
 });
 
 module.exports = app;

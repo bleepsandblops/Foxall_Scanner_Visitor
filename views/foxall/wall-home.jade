@@ -14,7 +14,7 @@ block content
       .wall-message-inner Scanning...
     .wall-images.js--wall-images(data-status="done")
       each image in timelines[1].images
-        img(src= 'https://s3-eu-west-1.amazonaws.com/foxall-publishing-rooms/'+image.path)
+        img(onerror="this.style.display='none'", src= 'https://s3-eu-west-1.amazonaws.com/foxall-publishing-rooms/'+image.path)
   .scan-time
   
   h4(class="js--current-scan")

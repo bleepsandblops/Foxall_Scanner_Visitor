@@ -8987,7 +8987,8 @@ a:active, a.nice-select.open, a:focus {
   white-space: nowrap;
   height: 300px; }
   .wall-images img {
-    max-height: 100%; }
+    max-height: 100%;
+    transform: rotate(90deg); }
 
 .js--current-scan-images {
   /*display: none;*/ }
@@ -9178,5 +9179,8 @@ a {
     display: none; }
   a[href]:after {
     content: none !important; } }
+
+.email-controls {
+  display: none; }
 
 /*# sourceMappingURL=main.css.map */

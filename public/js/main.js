@@ -45,15 +45,15 @@ $(document).ready(function() {
             })
             $('.js--time-select').niceSelect();
             $('.js--timeline-link').attr('href', '/timeline/' + $('.js--time-select li').first().data('value'));
-            
+
             $('.js--time-select li').click(function(e) {
                 setTimeout(function() {
-                $('.js--timeline-link').attr('href', '/timeline/' + $('.js--time-select li.selected').data('value'));    
-                $('.js--timeline-link').show().css('display', 'inline-block');
-            },100) //NASTY
-                
+                    $('.js--timeline-link').attr('href', '/timeline/' + $('.js--time-select li.selected').data('value'));
+                    $('.js--timeline-link').show().css('display', 'inline-block');
+                }, 100) //NASTY
+
             });
-            
+
 
         })
             .fail(function() {
@@ -106,9 +106,9 @@ $(document).ready(function() {
     function doCameraScan(camera) {
         var name = $('.js--camera-name').val();
         console.log(name);
-        
+
         $('.js--current-scan').html('Scanning...')
-        $.get("/camera/"+camera+"/doscan/" + name, function(data) {
+        $.get("/camera/" + camera + "/doscan/" + name, function(data) {
             console.log(data);
             //alert("success");
             var time = data.time;
@@ -118,22 +118,36 @@ $(document).ready(function() {
             });
     }
 
-        $('.js--camera-publish').click(function(e) {
-            e.preventDefault();
-            var camera = $(this).data('link');
-            var name = $(this).data('name');
-            $(this).fadeOut();
-            $.get("/camera/sendemail/" + camera+'/'+name, function(data) {
+    $('.js--camera-email-init').click(function(e) {
+        e.preventDefault();
+        $('.email-controls').fadeIn();
+    })
+    $('.js--camera-publish').click(function(e) {
+        e.preventDefault();
+        var camera = $(this).data('link');
+        var name = $(this).data('name');
+        var type = $(this).data('type');
+        if (type == 'email') {
+            var destination = $('.js--camera-email').val();
+        }
+        $(this).fadeOut();
 
-                if (data.message == 'done') {
-                    $('.js--email-message').html("Thank you - your scan will be printed within 2 hours.");
-                }
-            })
-                .fail(function() {
-                    console.log('error');
-                });
+        $.get("/camera/sendemail/" + camera + '/' + name + '/' + type + '/' + destination, function(data) {
 
-        });
+            if (data.message == 'done' && data.type=='publish') {
+                $('.js--email-message').html("Thank you - your scan will be printed within 2 hours.");
+
+            } 
+            if (data.message == 'done' && data.type=='email') {
+                $('.js--email-message').html("Thank you - your scan has been sent by email.");
+                $('.email-controls').fadeOut();
+            }             
+        })
+            .fail(function() {
+                console.log('error');
+            });
+
+    });
 
     socket.on('cameraImage', function(path) {
         console.log('receiving image');
@@ -166,28 +180,28 @@ $(document).ready(function() {
         $('.js--current-scan').html('Scanning completed. ');
         // $('.js--current-scan').append('<a href="/camera/'+times.scannerTime+'">View Scan</a>');
         $('.js--current-scan').append('<a href="/camera/' + times.scannerTime + '" class="scan-validation-link">Accept Scan</a>');
-        $('.js--current-scan').append('<a data-scan="' + times.scannerTime + '" class="scan-validation-link js--reject-camera-scan" data-camera="'+camera+'" href="#">Re-scan</a>');
+        $('.js--current-scan').append('<a data-scan="' + times.scannerTime + '" class="scan-validation-link js--reject-camera-scan" data-camera="' + camera + '" href="#">Re-scan</a>');
         bindScanControls();
     });
 
     socket.on('wallSingleImage', function(path) {
         //$('.message').html('Scanning completed at '+times.friendlyTime);
         if ($('.js--wall-images').data('status') == 'done') {
-            
-        $('.js--wall-images').empty();
-        $('.js--wall-images').data('status', 'doing');
-    } 
-    console.log('received image single wall with path '+path);
-        $('.js--wall-images').append('<img src="/' + path + '"/>');
-    
+
+            $('.js--wall-images').empty();
+            $('.js--wall-images').data('status', 'doing');
+        }
+        console.log('received image single wall with path ' + path);
+        $('.js--wall-images').append('<img onerror="this.style.display=\'none\'" src="/' + path + '"/>');
+
     });
 
     socket.on('scannerWallFinished', function(times) {
         console.log(times);
         $('.wall-message').hide();
-        $('.js--wall-images').data('status','done');
-        $('.scan-time').html('Scanning completed at '+times.friendlyTime);
+        $('.js--wall-images').data('status', 'done');
+        $('.scan-time').html('Scanning completed at ' + times.friendlyTime);
     });
 
-    
+
 });

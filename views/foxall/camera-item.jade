@@ -10,7 +10,11 @@ block content
     .header-links
       a(class='camera-link', href='http://publishingrooms.com/camera/#{camera.id}') Link 
       if env == 'exhibition'
-        a(class='camera-link js--camera-publish', href='', data-link="#{camera.id}" data-name="#{camera.name} - #{camera.friendlyTimeline}") Publish
+        a(href="", class="camera-link js--camera-email-init") Email
+        .email-controls      
+          input(class="js--camera-email")
+          a(class='camera-link js--camera-publish', href='', data-link="#{camera.id}" data-type="email" data-name="#{camera.name} - #{camera.friendlyTimeline}") Send
+        a(class='camera-link js--camera-publish', href='', data-link="#{camera.id}" data-type="publish" data-name="#{camera.name} - #{camera.friendlyTimeline}") Publish
       span(class="separator") |
       a(class='camera-link js--camera-share', target='_blank', href='https://twitter.com/intent/tweet?text=Publishing%20Rooms&url=http://publishingrooms.com/camera/#{camera.id}') Twitter
       a(class='camera-link js--camera-share', target='_blank', href='https://www.facebook.com/sharer/sharer.php?t=Publishing%20Rooms&u=http://publishingrooms.com/camera/#{camera.id}') Facebook
