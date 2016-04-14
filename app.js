@@ -51,6 +51,7 @@ var apiController = require('./controllers/api');
 var contactController = require('./controllers/contact');
 var scannerWallController = require('./controllers/scannerwall');
 var scannerCameraController = require('./controllers/scannercamera');
+var scannerBodyController = require('./controllers/scannerbody');
 
 /**
  * API keys and Passport configuration.
@@ -303,6 +304,10 @@ app.use('/scanners', express.static(__dirname + '/scanners'));
 app.get('/timeline/:timelineid', scannerWallController.getTimeline);
 
 
+app.get('/bodyscan', scannerBodyController.getHome);
+
+
+
 app.get('/camera/:cameraid', scannerCameraController.getCameraScan);
 
 if (process.env.FOXALL_ENV == 'exhibition') {
@@ -310,6 +315,8 @@ if (process.env.FOXALL_ENV == 'exhibition') {
     app.get('/camera/:camera/doscan/:name', scannerCameraController.doScan);
     app.get('/camera/deletescan/:name', scannerCameraController.deleteScan);
     app.get('/camera/sendemail/:camera/:name/:type/:destination', scannerCameraController.sendEmail);
+
+    app.get('/bodyscan/doscan', scannerBodyController.doScan);
 }
 app.get('/cameras/', scannerCameraController.getCameras);
 

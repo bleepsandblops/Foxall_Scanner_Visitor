@@ -79,6 +79,19 @@ $(document).ready(function() {
         doScan();
     })
 
+    $('.js--body-scan').click(function(e) {
+        e.preventDefault();
+        $.get("/bodyScan/doscan", function(data) {
+            console.log(data);
+            //alert("success");
+            var time = data.time;
+        })
+            .fail(function() {
+                console.log('error');
+            });
+
+    })
+
     /*
     $('.js--timelines-arrow').click(function(e) {
         e.preventDefault();
@@ -111,7 +124,7 @@ $(document).ready(function() {
     function doCameraScan(camera) {
         var name = $('.js--camera-name').val();
 
-        
+
         $.get("/camera/" + camera + "/doscan/" + name, function(data) {
             console.log(data);
             //alert("success");
@@ -138,14 +151,14 @@ $(document).ready(function() {
 
         $.get("/camera/sendemail/" + camera + '/' + name + '/' + type + '/' + destination, function(data) {
 
-            if (data.message == 'done' && data.type=='publish') {
+            if (data.message == 'done' && data.type == 'publish') {
                 $('.js--email-message').html("Thank you - your scan will be printed within 2 hours.");
 
-            } 
-            if (data.message == 'done' && data.type=='email') {
+            }
+            if (data.message == 'done' && data.type == 'email') {
                 $('.js--email-message').html("Thank you - your scan has been sent by email.");
                 $('.email-controls').fadeOut();
-            }             
+            }
         })
             .fail(function() {
                 console.log('error');
@@ -160,6 +173,15 @@ $(document).ready(function() {
         //$('.js--current-scan').append('1 done... ');
     });
 
+    socket.on('bodyImage', function(image) {
+        console.log('receiving image');
+        console.log(image);
+        $('.js--body-image-'+image.order).attr('src', image.path);
+        //console.log('<img src="' + path + '/>');
+        //$('.js--current-scan-images').prepend('<img src="/' + path + '"/>');
+
+    });
+
     function bindScanControls() {
         $('.js--reject-camera-scan').click(function(e) {
             var scan = $(this).data('scan');
@@ -170,9 +192,9 @@ $(document).ready(function() {
                 $('.js--current-scan-images').empty()
                 $('.js--camera-name').val('');
                 $('.js--current-scan').fadeOut(function() {
-                $('.js--camera-scan').fadeIn();    
+                    $('.js--camera-scan').fadeIn();
                 });
-                
+
                 //doCameraScan(camera);
 
             })
@@ -191,7 +213,7 @@ $(document).ready(function() {
             $('.send-modal').fadeIn();
             setTimeout(function() {
                 location.reload();
-            },5000);
+            }, 5000);
         });
 
         $('.js--camera-rescan').click(function(e) {
@@ -208,7 +230,7 @@ $(document).ready(function() {
 
         $('.js--camera-publish').data('link', times.scannerTime);
         $('.js--camera-publish').data('name', $('.js--camera-name').val());
-        
+
         $('.js--current-scan').append('<a data-scan="' + times.scannerTime + '" class="button button--yellow scan-validation-link js--reject-camera-scan" data-camera="' + camera + '" href="#">Re-scan</a>');
         $('.js--current-scan').append('<a href="/camera/' + times.scannerTime + '" class="js--accept-camera-scan button scan-validation-link">Publish</a>');
         bindScanControls();

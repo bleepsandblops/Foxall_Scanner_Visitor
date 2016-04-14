@@ -6,7 +6,8 @@ var imageSchema = mongoose.Schema({
     installation: Number,
     path: String,
     timelineId: String,
-    cameraId: String
+    cameraId: String,
+    order: Number
 });
 
 imageSchema.methods.dump = function() {
