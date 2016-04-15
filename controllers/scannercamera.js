@@ -45,11 +45,11 @@ exports.doScan = function(req, res, next) {
     var ScannerCamera = require('../models/ScannerCamera');
 
     var name = req.params.name;
-    var camera = req.params.camera;
+    var cameraNum = req.params.camera;
 
     //var name = 'testname';
 
-    var scanners = JSON.parse(fs.readFileSync('scanners/scannersCamera' + camera + '.json', 'utf8'));
+    var scanners = JSON.parse(fs.readFileSync('scanners/scannersCamera' + cameraNum + '.json', 'utf8'));
 
 
 
@@ -103,7 +103,7 @@ exports.doScan = function(req, res, next) {
         io.emit('cameraImageFinished', {
             friendlyTime: friendlyTime(new Date(timelineId)),
             scannerTime: timelineId,
-            camera: camera
+            cameraSocket: cameraNum
         });
         res.json({});
     });
@@ -155,7 +155,7 @@ exports.doScan = function(req, res, next) {
                 image.save(function(err, fluffy) {
                     if (err) return console.error(err);
 
-                    req.io.emit('cameraImage', camera, image.path);
+                    req.io.emit('cameraImage', {cameraSocket : cameraNum, path:image.path});
                     finished(scannerTime);
                 });
             });

@@ -39,7 +39,9 @@ $(document).ready(function() {
 
     if ($('body').hasClass('camerascan')) {
 
-        socket.on('cameraImage', function(cameraSocket, path) {
+        socket.on('cameraImage', function(data) {
+            var path = data.path;
+            var cameraSocket = data.cameraSocket;
             var camera = $('.js--camera-scan').data('camera');
             if (camera == cameraSocket) {
 
@@ -50,10 +52,13 @@ $(document).ready(function() {
             }
         });
 
-        socket.on('cameraImageFinished', function(cameraSocket, times) {
-            console.log(times);
-            console.log(cameraSocket);
+        socket.on('cameraImageFinished', function(data) {
+            var times = data;
+            var cameraSocket = data.cameraSocket;
+
             var camera = $('.js--camera-scan').data('camera');
+            console.log(camera);
+            console.log(cameraSocket);
             if (camera == cameraSocket) {
                 $('.js--current-scan').html('Scanning completed. ');
 
