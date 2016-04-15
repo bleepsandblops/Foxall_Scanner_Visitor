@@ -21,6 +21,7 @@ exports.getHome = function(req, res, next) {
 
     res.render('foxall/camera-scan', {
         camera: req.params.camera,
+        pageClass: "camerascan",
         env: process.env.FOXALL_ENV
     })
 
@@ -218,6 +219,7 @@ exports.getCameraScan = function(req, res, next) {
                     camera.friendlyTimeline = friendlyTime(date);
                     camera.images = images;
                     res.render('foxall/camera-item', {
+                        pageClass: "camerascan",
                         camera: camera,
                         env: process.env.FOXALL_ENV
                     })
@@ -242,6 +244,7 @@ exports.getCameras = function(req, res, next) {
     }).exec(function(err, cameras) {
         if (err) return console.error(err);
         res.render('foxall/camera-home', {
+            pageClass: "camerascan",
             cameras: cameras,
             env: process.env.FOXALL_ENV
         })

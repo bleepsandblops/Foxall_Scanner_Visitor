@@ -1,6 +1,7 @@
 $(document).ready(function() {
 
     var socket = io();
+    /*
     socket.on('image', function(path) {
         console.log('receiving image');
         console.log(path);
@@ -9,96 +10,89 @@ $(document).ready(function() {
         $('.js--current-scan').append('1 done... ');
     });
 
+
+*/
+
+    if ($('body').hasClass('bodyscan')) {
+
+        socket.on('bodyImage', function(image) {
+            console.log('receiving image');
+            console.log(image);
+
+            $('.js--body-image-' + image.order).html('<img class="body-image js--body-image" src="/' + image.path + '"/>');
+
+            //console.log('<img src="' + path + '/>');
+            //$('.js--current-scan-images').prepend('<img src="/' + path + '"/>');
+        });
+
+
+        socket.on('bodyImageFinished', function(camera, image) {
+            console.log('body finished');
+            //  console.log(image);
+            $('.wall-message--body').hide();
+            //    $('.js--body-image-'+image.order).attr('src', image.path);
+            //console.log('<img src="' + path + '/>');
+            //$('.js--current-scan-images').prepend('<img src="/' + path + '"/>');
+        });
+
+    }
+
+    if ($('body').hasClass('camerascan')) {
+
+        socket.on('cameraImage', function(cameraSocket, path) {
+            var camera = $('.js--camera-scan').data('camera');
+            if (camera == cameraSocket) {
+
+                console.log('receiving image');
+                console.log('<img src="' + path + '/>');
+                $('.js--current-scan-images').prepend('<img src="/' + path + '"/>');
+                //$('.js--current-scan').append('1 done... ');
+            }
+        });
+
+        socket.on('cameraImageFinished', function(cameraSocket, times) {
+            console.log(times);
+            console.log(cameraSocket);
+            var camera = $('.js--camera-scan').data('camera');
+            if (camera == cameraSocket) {
+                $('.js--current-scan').html('Scanning completed. ');
+
+                $('.js--camera-publish').data('link', times.scannerTime);
+                $('.js--camera-publish').data('name', $('.js--camera-name').val());
+
+                $('.js--current-scan').append('<a data-scan="' + times.scannerTime + '" class="button button--yellow scan-validation-link js--reject-camera-scan" data-camera="' + camera + '" href="#">Re-scan</a>');
+                $('.js--current-scan').append('<a href="/camera/' + times.scannerTime + '" class="js--accept-camera-scan button scan-validation-link">Publish</a>');
+                bindScanControls();
+            }
+        });
+    }
+
+    if ($('body').hasClass('wall')) {
+
+
     socket.on('wallMessage', function(message) {
         console.log(message);
         //$('.message').append(message);
         $('.wall-message').show();
-    });
+    });        
+        socket.on('wallSingleImage', function(path) {
+            if ($('.js--wall-images').data('status') == 'done') {
 
-    socket.on('imageFinished', function(times) {
-        console.log(times);
-        $('.js--current-scan').html('Scanned at ' + times.friendlyTime);
-        var newId = $('.link-timeline').first().data('timelineid') - 1;
-        var offset = 40;
+                $('.js--wall-images').empty();
+                $('.js--wall-images').data('status', 'doing');
+            }
+            console.log('received image single wall with path ' + path);
+            $('.js--wall-images').append('<img onerror="this.style.display=\'none\'" src="/' + path + '"/>');
 
-        var currentTimeline = $('.js--timeline-link').data('timeline');
-        var newTimeline = currentTimeline - 1;
-        //        $('.timelines-viewport').css('transform', 'translateY('+ (-offset*newTimeline)+'px)');
-        $('.js--timeline-link').data('timeline', newTimeline);
-        $('.js--timeline-link').attr('href', $('#timeline-' + newTimeline).data('link'));
+        });
 
-        $('.timelines-viewport').prepend('<span id="timeline-' + newId + '" data-timelineid="' + newId + '" data-link="/timeline/' + times.scannerTime + '" class="link-timeline">' + times.friendlyTime + '</span>');
-    });
-
-
-
-    socket.on('bodyImage', function(image) {
-        console.log('receiving image');
-        console.log(image);
-
-        $('.js--body-image-' + image.order).html('<img class="body-image js--body-image" src="/' + image.path + '"/>');
-
-        //console.log('<img src="' + path + '/>');
-        //$('.js--current-scan-images').prepend('<img src="/' + path + '"/>');
-    });
-
-
-    socket.on('bodyImageFinished', function(camera, image) {
-        console.log('body finished');
-        //  console.log(image);
-        $('.wall-message--body').hide();
-        //    $('.js--body-image-'+image.order).attr('src', image.path);
-        //console.log('<img src="' + path + '/>');
-        //$('.js--current-scan-images').prepend('<img src="/' + path + '"/>');
-    });
-
-
-
-
-    socket.on('cameraImage', function(cameraSocket, path) {
-        var camera = $('.js--camera-scan').data('camera');
-        if (camera == cameraSocket) {
-
-            console.log('receiving image');
-            console.log('<img src="' + path + '/>');
-            $('.js--current-scan-images').prepend('<img src="/' + path + '"/>');
-            //$('.js--current-scan').append('1 done... ');
-        }
-    });
-
-    socket.on('cameraImageFinished', function(cameraSocket, times) {
-        console.log(times);
-        var camera = $('.js--camera-scan').data('camera');
-        if (camera == cameraSocket) {
-            $('.js--current-scan').html('Scanning completed. ');
-
-            $('.js--camera-publish').data('link', times.scannerTime);
-            $('.js--camera-publish').data('name', $('.js--camera-name').val());
-
-            $('.js--current-scan').append('<a data-scan="' + times.scannerTime + '" class="button button--yellow scan-validation-link js--reject-camera-scan" data-camera="' + camera + '" href="#">Re-scan</a>');
-            $('.js--current-scan').append('<a href="/camera/' + times.scannerTime + '" class="js--accept-camera-scan button scan-validation-link">Publish</a>');
-            bindScanControls();
-        }
-    });
-
-    socket.on('wallSingleImage', function(path) {
-        //$('.message').html('Scanning completed at '+times.friendlyTime);
-        if ($('.js--wall-images').data('status') == 'done') {
-
-            $('.js--wall-images').empty();
-            $('.js--wall-images').data('status', 'doing');
-        }
-        console.log('received image single wall with path ' + path);
-        $('.js--wall-images').append('<img onerror="this.style.display=\'none\'" src="/' + path + '"/>');
-
-    });
-
-    socket.on('scannerWallFinished', function(times) {
-        console.log(times);
-        $('.wall-message').hide();
-        $('.js--wall-images').data('status', 'done');
-        $('.scan-time').html('Scanning completed at ' + times.friendlyTime);
-    });
+        socket.on('scannerWallFinished', function(times) {
+            console.log(times);
+            $('.wall-message').hide();
+            $('.js--wall-images').data('status', 'done');
+            $('.scan-time').html('Scanning completed at ' + times.friendlyTime);
+        });
+    }
 
 
     $('.js--day-select').niceSelect();

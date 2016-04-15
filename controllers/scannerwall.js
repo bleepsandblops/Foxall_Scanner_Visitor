@@ -35,11 +35,9 @@ exports.getHome = function(req, res, next) {
     var ScannerTimeline = require('../models/ScannerTimeline');
 
 
-
-
     ScannerTimeline.find().sort({
         time: -1
-    }).exec(function(err, timelines) {
+    }).limit(1).exec(function(err, timelines) {
         if (err) {
             res.json({})
         };
@@ -51,7 +49,8 @@ exports.getHome = function(req, res, next) {
         } else {
             timelinesArray = new Array();
             latestImages = new Array();
-
+            console.log('walllll');
+            console.log(timelines[0].id);
             finishedHome = _.after(timelines.length, function() {
                 console.log("Finished.");
                 var uniqueDays = unique(daysArray);
@@ -60,6 +59,7 @@ exports.getHome = function(req, res, next) {
                     days: uniqueDays,
                     latestImages: latestImages,
                     pageClass: "wall",
+                    time: friendlyTime(timelines[0].time),
                     env: process.env.FOXALL_ENV
                 })
             });

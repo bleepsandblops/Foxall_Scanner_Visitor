@@ -54,6 +54,7 @@ exports.getHome = function(req, res, next) {
 
             console.log(images);
             res.render('foxall/body-scan', {
+                pageClass: "bodyscan",
                 images: imagesOrdered,
                 env: process.env.FOXALL_ENV
             })
