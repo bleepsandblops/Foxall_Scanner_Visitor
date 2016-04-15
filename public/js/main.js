@@ -17,9 +17,19 @@ $('.js--info ').click(function(e) {
     e.preventDefault();
     $('.modal-info').fadeIn();
 })
-$('.modal-info').click(function(e) {
+$('.js--info-close').click(function(e) {
     e.preventDefault();
-    $(this).fadeOut();
+    $('.modal-info').fadeOut();
+})
+
+
+$('.js--credits ').click(function(e) {
+    e.preventDefault();
+    $('.modal-credits').fadeIn();
+})
+$('.js--credits-close').click(function(e) {
+    e.preventDefault();
+    $('.modal-credits').fadeOut();
 })
 
     if ($('body').hasClass('bodyscan')) {

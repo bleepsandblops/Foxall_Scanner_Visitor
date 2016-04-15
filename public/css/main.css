@@ -9280,7 +9280,7 @@ h2 {
   top: 0;
   left: 0; }
 
-.modal-info {
+.modal-info, .modal-credits {
   position: fixed;
   width: 50%;
   left: 10%;
@@ -9289,7 +9289,13 @@ h2 {
   top: 50%;
   transform: translateY(-50%);
   display: none;
-  height: 100%;
-  cursor: w-resize; }
+  height: 100%; }
+
+.js--credits-close, .js--info-close {
+  margin-top: 40px;
+  border-top: 1px solid #333;
+  display: inline-block;
+  font-weight: bold;
+  cursor: pointer; }
 
 /*# sourceMappingURL=main.css.map */

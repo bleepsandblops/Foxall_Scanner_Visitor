@@ -507,7 +507,7 @@ border:0;
   left:0;
 }
 
-.modal-info {
+.modal-info, .modal-credits {
       position: fixed;
     width: 50%;
     left: 10%;
@@ -517,5 +517,13 @@ border:0;
     transform: translateY(-50%);
     display: none;
     height: 100%;
-    cursor: w-resize;
+ 
+}
+
+.js--credits-close, .js--info-close {
+  margin-top:40px;
+  border-top:1px solid #333;
+  display: inline-block;
+  font-weight: bold;
+  cursor:pointer;
 }
