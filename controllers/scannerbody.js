@@ -31,7 +31,7 @@ exports.getHome = function(req, res, next) {
         time: -1
     }).limit(1).exec(function(err, bodyscan) {
         if (err) return console.error(err);
-        console.log('hello');
+        
         console.log(bodyscan[0].id);
 
 
@@ -45,6 +45,9 @@ exports.getHome = function(req, res, next) {
         }).exec(function(err, images) {
             if (err) return console.error(err);
             /* Latest Timeline */
+            console.log('***body scan images');
+            console.log(images);
+            console.log('///body scan images');
             for(var i=1; i<5;i++) {
               images.forEach(function(o){if (o.order == i) imagesOrdered.push(o);} );
             }
