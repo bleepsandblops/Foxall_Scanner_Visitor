@@ -101,7 +101,8 @@ exports.doScan = function(req, res, next) {
     finished = _.after(scanners.length, function(scannerTime) {
         io.emit('cameraImageFinished', {
             friendlyTime: friendlyTime(new Date(timelineId)),
-            scannerTime: timelineId
+            scannerTime: timelineId,
+            camera: camera
         });
         res.json({});
     });
@@ -153,7 +154,7 @@ exports.doScan = function(req, res, next) {
                 image.save(function(err, fluffy) {
                     if (err) return console.error(err);
 
-                    req.io.emit('cameraImage', image.path);
+                    req.io.emit('cameraImage', camera, image.path);
                     finished(scannerTime);
                 });
             });

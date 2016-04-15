@@ -9143,7 +9143,7 @@ a {
 .colour--2 {
   color: #009fe3; }
 
-.wall-message {
+.wall-message, .wall-message--body {
   position: fixed;
   width: 100%;
   height: 100%;

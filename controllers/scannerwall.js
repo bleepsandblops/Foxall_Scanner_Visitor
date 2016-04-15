@@ -173,7 +173,9 @@ exports.doWallScan = function(callbackImage, callbackFinished) {
             //var writeStream = fs.createWriteStream( 'images/' + scanner.id + '-' + scannerTime + '-resized.jpg');
 
             Jimp.read('images/' + scanner.id + '-' + scannerTime + '.jpg', function(err, image) {
-                if (err) throw err;
+                if (err) {
+                    throw err;
+                } else {
                 image.rotate(90) // resize
                 .write('images/' + scanner.id + '-' + scannerTime + '.jpg'); // save
 
@@ -208,6 +210,7 @@ exports.doWallScan = function(callbackImage, callbackFinished) {
                     callbackImage(image.path);
                     finished(scannerTime);
                 });
+                }
             });
 
 
