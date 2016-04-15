@@ -401,6 +401,9 @@ a {
 .footer-links {
   a {
     margin-right:10px;
+    .wall & {
+      color:black;
+    }
   }
 }
 footer {
