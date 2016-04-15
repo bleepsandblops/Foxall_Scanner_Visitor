@@ -506,3 +506,16 @@ border:0;
   top:0;
   left:0;
 }
+
+.modal-info {
+      position: fixed;
+    width: 50%;
+    left: 10%;
+    background-color: white;
+    padding: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: none;
+    height: 100%;
+    cursor: w-resize;
+}

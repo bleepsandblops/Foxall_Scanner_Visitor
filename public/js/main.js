@@ -13,6 +13,15 @@ $(document).ready(function() {
 
 */
 
+$('.js--info ').click(function(e) {
+    e.preventDefault();
+    $('.modal-info').fadeIn();
+})
+$('.modal-info').click(function(e) {
+    e.preventDefault();
+    $(this).fadeOut();
+})
+
     if ($('body').hasClass('bodyscan')) {
 
         socket.on('bodyImage', function(image) {
