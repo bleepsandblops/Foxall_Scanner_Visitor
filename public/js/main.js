@@ -178,7 +178,7 @@ $(document).ready(function() {
     socket.on('bodyImage', function(image) {
         console.log('receiving image');
         console.log(image);
-        $('.js--body-image-'+image.order).attr('src', image.path);
+        $('.js--body-image-'+image.order).attr('src', '/'+image.path);
         //console.log('<img src="' + path + '/>');
         //$('.js--current-scan-images').prepend('<img src="/' + path + '"/>');
     });
