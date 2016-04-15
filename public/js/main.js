@@ -57,15 +57,13 @@ $(document).ready(function() {
             var cameraSocket = data.cameraSocket;
 
             var camera = $('.js--camera-scan').data('camera');
-            console.log(camera);
-            console.log(cameraSocket);
             if (camera == cameraSocket) {
                 $('.js--current-scan').html('Scanning completed. ');
 
                 $('.js--camera-publish').data('link', times.scannerTime);
                 $('.js--camera-publish').data('name', $('.js--camera-name').val());
 
-                $('.js--current-scan').append('<a data-scan="' + times.scannerTime + '" class="button button--yellow scan-validation-link js--reject-camera-scan" data-camera="' + camera + '" href="#">Re-scan</a>');
+                $('.js--current-scan').append('<a data-scan="' + times.scannerTime + '" class="button button--yellow scan-validation-link js--reject-camera-scan" data-camera="' + camera + '" href="#">15</a>');
                 $('.js--current-scan').append('<a href="/camera/' + times.scannerTime + '" class="js--accept-camera-scan button scan-validation-link">Publish</a>');
                 bindScanControls();
             }
@@ -241,7 +239,17 @@ $(document).ready(function() {
 
 
     function bindScanControls() {
-        $('.js--reject-camera-scan').click(function(e) {
+        $('.js--reject-camera-scan').click(function(e){
+            e.preventDefault();
+        })
+        var time = 15;
+        var timeInterval = setInterval(function(){
+        $('.js--reject-camera-scan').html(time);
+        time--;
+        if (time == -1) {
+          $('.js--reject-camera-scan').html('Re-scan');
+          clearInterval(timeInterval);
+                  $('.js--reject-camera-scan').click(function(e) {
             var scan = $(this).data('scan');
             var camera = $(this).data('camera');
             console.log('rejecting');
@@ -261,6 +269,10 @@ $(document).ready(function() {
                 });
 
         });
+        }
+        },1000);
+        
+
 
         $('.js--accept-camera-scan').click(function(e) {
             e.preventDefault();

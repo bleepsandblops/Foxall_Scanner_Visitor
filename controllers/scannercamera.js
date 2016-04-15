@@ -72,7 +72,11 @@ exports.doScan = function(req, res, next) {
     };
 
     var scanFailed = function() {
-        finished(0);
+        //finished(0);
+        imagesDone++;
+                            if (imagesDone == scanners.length) {
+finished();
+}
     }
 
     var timelineId = Date.now();
@@ -99,14 +103,19 @@ exports.doScan = function(req, res, next) {
         }, scanner.delay);
     });
 
-    finished = _.after(scanners.length, function(scannerTime) {
-        io.emit('cameraImageFinished', {
-            friendlyTime: friendlyTime(new Date(timelineId)),
-            scannerTime: timelineId,
-            cameraSocket: cameraNum
-        });
-        res.json({});
-    });
+    var imagesDone = 0;
+
+    function finished() {
+                                console.log("CALLING FINISHED");
+                        io.emit('cameraImageFinished', {
+                            friendlyTime: friendlyTime(new Date(timelineId)),
+                            scannerTime: timelineId,
+                            cameraSocket: cameraNum
+                        });
+                        res.json({});
+
+
+    }
 
     function doSingleScan(scanner) {
         var scannerTime = Date.now();
@@ -155,8 +164,15 @@ exports.doScan = function(req, res, next) {
                 image.save(function(err, fluffy) {
                     if (err) return console.error(err);
 
-                    req.io.emit('cameraImage', {cameraSocket : cameraNum, path:image.path});
-                    finished(scannerTime);
+                    req.io.emit('cameraImage', {
+                        cameraSocket: cameraNum,
+                        path: image.path
+                    });
+                    imagesDone++;
+                    if (imagesDone == scanners.length) {
+                        finished();
+                    }
+
                 });
             });
         });
