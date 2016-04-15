@@ -31,6 +31,9 @@ $('.js--credits-close').click(function(e) {
     e.preventDefault();
     $('.modal-credits').fadeOut();
 })
+$('.modal-credits--exhibition a').click(function(e){
+    e.preventDefault();
+})
 
     if ($('body').hasClass('bodyscan')) {
 

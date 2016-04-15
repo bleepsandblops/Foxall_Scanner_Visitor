@@ -517,7 +517,7 @@ border:0;
     transform: translateY(-50%);
     display: none;
     height: 100%;
- 
+ overflow-y:auto;
 }
 
 .js--credits-close, .js--info-close {
