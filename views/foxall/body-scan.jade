@@ -7,7 +7,8 @@ block content
       a(href="/bodyscan") Publishing Rooms 
       | / 
       span(class="colour") Body Scan
-  a(class="js--body-scan", href="") 
+  if env == 'exhibition'
+    a(class="js--body-scan", href="") 
   .body-images.js--body-images
     span(class="js--body-image-1")
       if images[0]
