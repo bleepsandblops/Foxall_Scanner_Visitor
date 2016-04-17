@@ -32,7 +32,6 @@
     "fbgraph": "^1.1.0",
     "fs": "0.0.2",
     "github-api": "^0.11.2",
-
     "http-auth": "^2.2.9",
     "instagram-node": "^0.5.8",
     "jade": "^1.11.0",
@@ -48,6 +47,7 @@
     "node-linkedin": "^0.5.3",
     "node-sass-middleware": "^0.9.7",
     "nodemailer": "^2.3.0",
+    "opbeat": "^3.6.6",
     "passport": "0.3.2",
     "passport-facebook": "^2.1.0",
     "passport-github": "^1.1.0",

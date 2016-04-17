@@ -1,3 +1,12 @@
+if (process.env.FOXALL_ENV == 'exhibition') {
+    var opbeat = require('opbeat').start({
+  appId: '113ee92b12',
+  organizationId: '375e2882ed304c3eaa8d60aeb3609a58',
+  secretToken: '3a8e1d5904bccd7a9b7f4cb22ca5b46a4fe652e6'
+})
+}
+
+
 /**
  * Module dependencies.
  */
