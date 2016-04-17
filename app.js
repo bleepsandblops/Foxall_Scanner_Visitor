@@ -1,4 +1,4 @@
-if (process.env.FOXALL_ENV == 'exhibition') {
+if (process.env.FOXALL_ENV == 'public') {
     var opbeat = require('opbeat').start({
   appId: '113ee92b12',
   organizationId: '375e2882ed304c3eaa8d60aeb3609a58',
