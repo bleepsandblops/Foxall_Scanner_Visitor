@@ -19,6 +19,9 @@ $.expr[":"].contains = $.expr.createPseudo(function(arg) {
     };
 });
 
+            var filter = $('.camera-filter').val(); 
+            $('.camera-index').find("a:contains(" + filter + ")").show();
+            $('.camera-index').find("a:not(:contains(" + filter + "))").hide();
 
     $('.camera-filter').keyup( function () {
             var filter = $(this).val(); 
