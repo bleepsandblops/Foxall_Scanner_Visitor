@@ -1,0 +1,22 @@
+extends ../layout
+block content
+  .page-header
+    h2
+      if env == 'exhibition'
+        a(href="/scannerwall", class="wall-header") Publishing Rooms 
+      if env == 'public'  
+        a(href="/", class="wall-header") Publishing Rooms 
+      span() / 
+        a(href="/scannerwall", class="") Wall Scan 
+      span() / 
+        span(class="colour colour--2") Wall Scan Search
+
+  .wall-search-controls
+    select.js--day-select
+      option(value=pick) Pick a day
+      each day, i in days
+        option(value=day) #{day}
+    select.js--time-select
+      option(value=pick) Pick a time
+
+    a(class="js--timeline-link timelines-link" href="#") go

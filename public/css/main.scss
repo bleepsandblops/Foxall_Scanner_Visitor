@@ -588,3 +588,33 @@ border:0;
 .camera-filter-wrapper {
   font-size:18px;
 }
+
+.wall-search-controls {
+  margin-left:30px;
+}
+
+.nice-select {
+  background-color: black;
+  color:white;
+  .option {
+      background-color: black;
+  color:white;
+  }
+}
+
+.nice-select .option:hover, .nice-select .option.focus, .nice-select .option.selected.focus {
+        background-color: #333;
+  color:white;
+}
+.nice-select .list:hover .option:not(:hover) {
+  background-color: black !important;
+}
+
+.timelines-link {
+      background-color: black;
+      width: initial;
+    height: initial;
+    font-size: 20px;
+    line-height: 42px;
+    margin-left: 20px;
+}

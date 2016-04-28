@@ -192,7 +192,7 @@ $(document).ready(function() {
                 var friendlyDate = new Date(timeline.time);
                 console.log(friendlyDate);
                 friendlyDate = friendlyDate.toLocaleTimeString();
-                $('.js--time-select').append('<option value="' + timeline.id + '">' + friendlyDate + '</option>');
+                $('.js--time-select').append('<option value="' + timeline.id + '"><a href="/timeline/'+timeline.id+'">' + friendlyDate + '</a></option>');
             })
             $('.js--time-select').niceSelect();
             $('.js--timeline-link').attr('href', '/timeline/' + $('.js--time-select li').first().data('value'));

@@ -270,6 +270,72 @@ exports.doScan = function(req, res, next) {
 
 }
 */
+
+exports.getSearch = function(req, res, next) {
+    request = require('request');
+    var ScannerImage = require('../models/ScannerImage');
+    var ScannerTimeline = require('../models/ScannerTimeline');
+
+    ScannerTimeline.find().sort({
+        time: -1
+    }).limit(1).exec(function(err, timelines) {
+        if (err) {
+            res.json({})
+        };
+        if (timelines.length == 0) {
+            res.render('foxall/wall-home--empty', {
+                pageClass: "wall",
+                env: process.env.FOXALL_ENV
+            })
+        } else {
+            timelinesArray = new Array();
+            latestImages = new Array();
+            console.log('walllll');
+            console.log(timelines[0].id);
+            finishedHome = _.after(timelines.length, function() {
+                console.log("Finished.");
+                var uniqueDays = unique(daysArray);
+                res.render('foxall/wall-search', {
+                    timelines: timelinesArray,
+                    days: uniqueDays,
+                    latestImages: latestImages,
+                    pageClass: "wall",
+                    time: friendlyTime(timelines[0].time),
+                    env: process.env.FOXALL_ENV
+                })
+            });
+
+
+
+            timelines.forEach(function(timeline) {
+                ScannerImage.find({
+                    "timelineId": timeline.id
+                }).sort({
+                    time: -1
+                }).exec(function(err, images) {
+                    if (err) return console.error(err);
+                    /* Latest Timeline */
+
+                    var date = new Date(timeline.time);
+                    var day = date.toDateString();
+
+                    daysArray.push(day);
+
+                    timeline.unixDate = date;
+                    timeline.friendlyTimeline = friendlyTime(date);
+                    timeline.images = images;
+
+                    timelinesArray.push(timeline);
+                    finishedHome();
+                })
+
+            })
+            //        res.json(images);
+        }
+    })
+
+}
+
 exports.getScans = function(req, res, next) {
     request = require('request');
     var ScannerImage = require('../models/ScannerImage');

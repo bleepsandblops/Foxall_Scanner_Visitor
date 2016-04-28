@@ -317,6 +317,7 @@ app.get('/auth/pinterest/callback', passport.authorize('pinterest', {
  */
 
 app.get('/scannerwall', scannerWallController.getHome);
+app.get('/scannerwall/search', scannerWallController.getSearch);
 app.get('/scannerwall/findDayTimelines/:day', scannerWallController.findDayTimelines);
 //app.get('/doscan', scannerWallController.doScan);
 app.get('/getscans', scannerWallController.getScans);
