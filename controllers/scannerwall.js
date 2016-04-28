@@ -278,7 +278,7 @@ exports.getSearch = function(req, res, next) {
 
     ScannerTimeline.find().sort({
         time: -1
-    }).limit(1).exec(function(err, timelines) {
+    }).exec(function(err, timelines) {
         if (err) {
             res.json({})
         };
@@ -290,7 +290,7 @@ exports.getSearch = function(req, res, next) {
         } else {
             timelinesArray = new Array();
             latestImages = new Array();
-            console.log('walllll');
+            
             console.log(timelines[0].id);
             finishedHome = _.after(timelines.length, function() {
                 console.log("Finished.");
