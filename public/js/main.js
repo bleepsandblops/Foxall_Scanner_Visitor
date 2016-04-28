@@ -13,27 +13,45 @@ $(document).ready(function() {
 
 */
 
-$('.js--info ').click(function(e) {
-    e.preventDefault();
-    $('.modal-info').fadeIn();
-})
-$('.js--info-close').click(function(e) {
-    e.preventDefault();
-    $('.modal-info').fadeOut();
-})
+$.expr[":"].contains = $.expr.createPseudo(function(arg) {
+    return function( elem ) {
+        return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+    };
+});
 
 
-$('.js--credits ').click(function(e) {
-    e.preventDefault();
-    $('.modal-credits').fadeIn();
-})
-$('.js--credits-close').click(function(e) {
-    e.preventDefault();
-    $('.modal-credits').fadeOut();
-})
-$('.modal-credits--exhibition a').click(function(e){
-    e.preventDefault();
-})
+    $('.camera-filter').keyup( function () {
+            var filter = $(this).val(); 
+            if (filter) {
+            $('.camera-index').find("a:contains(" + filter + ")").show();
+            $('.camera-index').find("a:not(:contains(" + filter + "))").hide();
+        } else {
+            $('.camera-index a').show();
+        }
+    });
+
+
+    $('.js--info ').click(function(e) {
+        e.preventDefault();
+        $('.modal-info').fadeIn();
+    })
+    $('.js--info-close').click(function(e) {
+        e.preventDefault();
+        $('.modal-info').fadeOut();
+    })
+
+
+    $('.js--credits ').click(function(e) {
+        e.preventDefault();
+        $('.modal-credits').fadeIn();
+    })
+    $('.js--credits-close').click(function(e) {
+        e.preventDefault();
+        $('.modal-credits').fadeOut();
+    })
+    $('.modal-credits--exhibition a').click(function(e) {
+        e.preventDefault();
+    })
 
     if ($('body').hasClass('bodyscan')) {
 

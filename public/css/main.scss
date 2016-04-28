@@ -279,10 +279,16 @@ display: inline-block;
   margin-right:10px;
   color:black;
 }
+.camera-index {
+      -webkit-column-count: 4; /* Chrome, Safari, Opera */
+    -moz-column-count: 4; /* Firefox */
+    column-count: 4;
 
+}
 .camera-index-link {
   display: block;
   color:black;
+  font-size:18px;
 }
 
 .js--timeline-link {
@@ -532,4 +538,15 @@ border:0;
   display: inline-block;
   font-weight: bold;
   cursor:pointer;
+}
+
+.camera-filter {
+  margin-bottom: 20px;
+    background-color: transparent;
+    border: 0;
+    border-bottom: 2px solid black;
+}
+
+.camera-filter-wrapper {
+  font-size:18px;
 }

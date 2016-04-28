@@ -7,7 +7,10 @@ block content
       | / Camera List
     if env == 'exhibition'
       a(href="/camera") Scan  
-    
-  for camera in cameras
-    a(class="camera-index-link", href="/camera/#{camera.id}") #{camera.name}
+  .camera-filter-wrapper
+    | Filter by name: 
+    input.camera-filter
+  .camera-index
+    for camera in cameras
+      a(class="camera-index-link", href="/camera/#{camera.id}") #{camera.name}
 
