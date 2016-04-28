@@ -4,7 +4,10 @@ extends ../layout
 block content
   .page-header
     h2 
-      a(href="/bodyscan") Publishing Rooms 
+      if env == 'public'  
+        a(href="/", class="wall-header") Publishing Rooms     
+      if env == 'exhibition'          
+        a(href="/bodyscan") Publishing Rooms 
       | / 
       span(class="colour") Body Scan
   if env == 'exhibition'

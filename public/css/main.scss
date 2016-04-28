@@ -61,7 +61,11 @@ footer {
   width: 100%;
   height: 45px;
   line-height: 45px;
+@media screen and (max-width:600px) {
 
+    height: 54px;
+    line-height: 23px;
+}
   p, ul {
     margin-bottom: 0;
   }
@@ -327,6 +331,13 @@ body {
 footer {
   background-color: white;
   color:black;
+  .container {
+    background-color: white;
+    @media screen and (max-width:600px) {
+        padding-top: 5px;
+    padding-bottom: 5px;
+    }
+  }
   .wall & {
     background-color: white;
     color:black;
@@ -415,6 +426,16 @@ a {
     .wall & {
       color:black;
     }
+    &:hover {
+      text-decoration: none;
+      background-color: black;
+      color:white;
+    }
+  }
+  @media screen and (max-width:600px) {
+    float: none;
+    clear: both;
+    text-align: left;
   }
 }
 footer {
@@ -443,6 +464,14 @@ footer {
   top:50%;
   left:50%;
   transform:translateX(-50%) translateY(-50%);
+}
+.home-logo {
+  width:100%;
+  img {
+    max-width: 90%;
+    margin:0 auto;
+    display: block;
+  }
 }
 h2 
 {font-weight: normal;}
@@ -534,6 +563,10 @@ border:0;
     display: none;
     height: 100%;
  overflow-y:auto;
+ @media screen and (max-width:800px) {
+  width:80%;
+  left:5%;
+ }
 }
 
 .js--credits-close, .js--info-close {

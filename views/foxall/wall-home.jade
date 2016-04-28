@@ -1,9 +1,11 @@
 extends ../layout
-
 block content
   .page-header
     h2
-      a(href="/scannerwall", class="wall-header") Publishing Rooms 
+      if env == 'exhibition'
+        a(href="/scannerwall", class="wall-header") Publishing Rooms 
+      if env == 'public'  
+        a(href="/", class="wall-header") Publishing Rooms 
       span() / 
       span(class="colour colour--2") Wall Scan
   .wall-message
