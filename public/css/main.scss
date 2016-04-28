@@ -283,7 +283,12 @@ display: inline-block;
       -webkit-column-count: 4; /* Chrome, Safari, Opera */
     -moz-column-count: 4; /* Firefox */
     column-count: 4;
-
+a {
+  &:hover {
+   background-color:black;
+text-decoration: none;
+color: #D8D8D8;  }
+}
 }
 .camera-index-link {
   display: block;
