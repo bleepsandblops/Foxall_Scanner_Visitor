@@ -21,5 +21,5 @@ block content
   .camera-wrapper
     .images.images--camera
       for image in camera.images
-        img(src= 'https://s3-eu-west-1.amazonaws.com/foxall-publishing-rooms/'+image.path)
+        img(onerror="this.src='https://s3-eu-west-1.amazonaws.com/foxall-publishing-rooms/errorImage.jpg'", src= 'https://s3-eu-west-1.amazonaws.com/foxall-publishing-rooms/'+image.path)
     
