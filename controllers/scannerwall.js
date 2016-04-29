@@ -276,6 +276,19 @@ exports.getSearch = function(req, res, next) {
     var ScannerImage = require('../models/ScannerImage');
     var ScannerTimeline = require('../models/ScannerTimeline');
 
+    for(i=0;i<10;i++) {
+                    var date = new Date();
+                    date.setDate(date.getDate() - 1);
+                    var day = date.toDateString();
+                                        daysArray.push(day);
+
+}
+                res.render('foxall/wall-search', {
+                    days: daysArray,
+                    pageClass: "wall",
+                    env: process.env.FOXALL_ENV
+                })    
+/*
     ScannerTimeline.find().sort({
         time: -1
     }).exec(function(err, timelines) {
@@ -314,7 +327,6 @@ exports.getSearch = function(req, res, next) {
                     time: -1
                 }).exec(function(err, images) {
                     if (err) return console.error(err);
-                    /* Latest Timeline */
 
                     var date = new Date(timeline.time);
                     var day = date.toDateString();
@@ -333,6 +345,7 @@ exports.getSearch = function(req, res, next) {
             //        res.json(images);
         }
     })
+    */
 
 }
 
