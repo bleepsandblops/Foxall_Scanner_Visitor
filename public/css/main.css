@@ -9385,4 +9385,20 @@ h2 {
   margin-left: 30px;
   font-size: 18px; }
 
+.js--time-select, .js--day-select {
+  display: block;
+  margin-bottom: 20px;
+  -webkit-column-count: 4;
+  /* Chrome, Safari, Opera */
+  -moz-column-count: 4;
+  /* Firefox */
+  column-count: 4; }
+  .js--time-select a, .js--day-select a {
+    display: block;
+    text-align: center; }
+    .js--time-select a:hover, .js--time-select a.active, .js--day-select a:hover, .js--day-select a.active {
+      background-color: white;
+      color: black;
+      text-decoration: none; }
+
 /*# sourceMappingURL=main.css.map */

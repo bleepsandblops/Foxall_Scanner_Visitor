@@ -12,11 +12,9 @@ block content
         span(class="colour colour--2") Wall Scan Search
 
   .wall-search-controls
-    select.js--day-select
-      option(value=pick) Pick a day
+    div.js--day-select
       each day, i in days
-        option(value=day) #{day}
-    select.js--time-select
-      option(value=pick) Pick a time
+        a(href="", data-day=day) #{day}
+    div.js--time-select
 
     a(class="js--timeline-link timelines-link" href="#") go

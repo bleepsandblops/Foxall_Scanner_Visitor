@@ -181,20 +181,27 @@ $(document).ready(function() {
     }
 
 
-    $('.js--day-select').niceSelect();
+    //$('.js--day-select').niceSelect();
 
-    $('.js--day-select li').click(function(e) {
-        var date = $(this).data('value');
+    $('.js--day-select a').click(function(e) {
+        $('.js--day-select a.active').removeClass('active');
+        $(this).addClass('active');
+        $('.js--time-select').empty();
+        e.preventDefault();
+        var date = $(this).data('day');
         $.get("/scannerwall/findDayTimelines/" + date, function(data) {
             console.log('DAY TIMELINES');
             console.log(data);
+            if (data.timelines.length == 0) {
+                $('.js--time-select').html('NO SCANS');
+            }
             data.timelines.forEach(function(timeline) {
                 var friendlyDate = new Date(timeline.time);
                 console.log(friendlyDate);
                 friendlyDate = friendlyDate.toLocaleTimeString();
-                $('.js--time-select').append('<option value="' + timeline.id + '"><a href="/timeline/'+timeline.id+'">' + friendlyDate + '</a></option>');
+                $('.js--time-select').append('<a href="/timeline/'+timeline.id+'">' + friendlyDate + '</a>');
             })
-            $('.js--time-select').niceSelect();
+            //$('.js--time-select').niceSelect();
             $('.js--timeline-link').attr('href', '/timeline/' + $('.js--time-select li').first().data('value'));
 
             $('.js--time-select li').click(function(e) {
