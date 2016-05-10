@@ -17,3 +17,15 @@ block content
     for camera in cameras
       a(class="camera-index-link", href="/camera/#{camera.id}") #{camera.name}
 
+  .modal-postit
+    a(href="", class="modal-postit-close js--modal-postit-close") X
+    .modal-postit--inner
+      .gallery.js-flickity(data-flickity-options='{ "imagesLoaded": true, "pageDots": false }')
+        .gallery-cell
+          img(src="https://scontent-lhr3-1.cdninstagram.com/t51.2885-15/s640x640/sh0.08/e35/12965707_1697084727222485_1409888826_n.jpg?ig_cache_key=MTIzMjYxMDMwMzUyNDA2NDYxNg%3D%3D.2")
+        .gallery-cell
+          img(src="https://scontent-lhr3-1.cdninstagram.com/t51.2885-15/e15/13117764_1764259563811149_355083205_n.jpg?ig_cache_key=MTIzOTgyMTcxNjk1NzAyMzI3Mg%3D%3D.2")
+        .gallery-cell
+          img(src="https://scontent-lhr3-1.cdninstagram.com/t51.2885-15/s640x640/sh0.08/e35/12677681_1675029039429398_258085203_n.jpg?ig_cache_key=MTE4ODMwNzYwMzA0NzQzNjE1Mw%3D%3D.2")
+        .gallery-cell 
+          img(src="https://scontent-lhr3-1.cdninstagram.com/t51.2885-15/s640x640/sh0.08/e35/c137.0.805.805/13102573_497217990484302_150789498_n.jpg?ig_cache_key=MTIzOTE3NjgyNDEzODA2ODczMg%3D%3D.2.c")
