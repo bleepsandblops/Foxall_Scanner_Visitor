@@ -9,6 +9,15 @@ block content
       a(href='/cameras/1' class="home-link") Scanner Cam 1
       a(href='/cameras/2' class="home-link") Scanner Cam 2
     if env == 'public'
-      a(href='/cameras' class="home-link") Scanner Cams
-    a(href='/bodyscan' class="home-link") Body Scan
-    a(href='/scannerwall' class="home-link") Wall Scan
+    .button-container  
+      a(href='/cameras' class="home-link home-button") Scanner Cams
+      a(href='/cameras' class="home-link home-button") Scanner Cams
+      a(href='/cameras' class="home-link home-button") Scanner Cams
+    .button-container
+      a(href='/bodyscan' class="home-link home-button") Body Scan
+      a(href='/bodyscan' class="home-link home-button") Body Scan
+      a(href='/bodyscan' class="home-link home-button") Body Scan
+    .button-container
+      a(href='/scannerwall' class="home-link home-button") Wall Scan
+      a(href='/scannerwall' class="home-link home-button") Wall Scan
+      a(href='/scannerwall' class="home-link home-button") Wall Scan
