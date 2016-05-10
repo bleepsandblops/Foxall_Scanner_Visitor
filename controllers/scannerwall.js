@@ -277,7 +277,7 @@ exports.getSearch = function(req, res, next) {
     var ScannerTimeline = require('../models/ScannerTimeline');
     var daysArray = new Array();
 
-    for(i=0;i<15;i++) {
+    for(i=0;i<27;i++) {
                     var date = new Date();
                     date.setDate(date.getDate() - i);
                     var day = date.toDateString();

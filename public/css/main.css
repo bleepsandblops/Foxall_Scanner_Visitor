@@ -9470,7 +9470,6 @@ h2 {
 
 .modal-postit {
   position: fixed;
-  display: none;
   width: 300px;
   height: 300px;
   background-color: #ffed00;
@@ -9505,99 +9504,6 @@ h2 {
   8. Height (px)
 */
 .home-link {
-  color: black;
-  position: relative; }
-
-@keyframes home-link-anim-1 {
-  0% {
-    clip: rect(43px, 280px, 30px, 0); }
-  5.88235% {
-    clip: rect(37px, 280px, 4px, 0); }
-  11.76471% {
-    clip: rect(43px, 280px, 5px, 0); }
-  17.64706% {
-    clip: rect(3px, 280px, 1px, 0); }
-  23.52941% {
-    clip: rect(22px, 280px, 26px, 0); }
-  29.41176% {
-    clip: rect(12px, 280px, 25px, 0); }
-  35.29412% {
-    clip: rect(21px, 280px, 24px, 0); }
-  41.17647% {
-    clip: rect(3px, 280px, 2px, 0); }
-  47.05882% {
-    clip: rect(26px, 280px, 41px, 0); }
-  52.94118% {
-    clip: rect(12px, 280px, 30px, 0); }
-  58.82353% {
-    clip: rect(34px, 280px, 36px, 0); }
-  64.70588% {
-    clip: rect(22px, 280px, 41px, 0); }
-  70.58824% {
-    clip: rect(7px, 280px, 24px, 0); }
-  76.47059% {
-    clip: rect(6px, 280px, 7px, 0); }
-  82.35294% {
-    clip: rect(24px, 280px, 43px, 0); }
-  88.23529% {
-    clip: rect(35px, 280px, 34px, 0); }
-  94.11765% {
-    clip: rect(11px, 280px, 30px, 0); }
-  100% {
-    clip: rect(12px, 280px, 31px, 0); } }
-
-@keyframes home-link-anim-2 {
-  0% {
-    clip: rect(34px, 280px, 2px, 0); }
-  5.88235% {
-    clip: rect(17px, 280px, 21px, 0); }
-  11.76471% {
-    clip: rect(27px, 280px, 11px, 0); }
-  17.64706% {
-    clip: rect(19px, 280px, 34px, 0); }
-  23.52941% {
-    clip: rect(31px, 280px, 23px, 0); }
-  29.41176% {
-    clip: rect(2px, 280px, 4px, 0); }
-  35.29412% {
-    clip: rect(41px, 280px, 32px, 0); }
-  41.17647% {
-    clip: rect(20px, 280px, 27px, 0); }
-  47.05882% {
-    clip: rect(22px, 280px, 36px, 0); }
-  52.94118% {
-    clip: rect(30px, 280px, 11px, 0); }
-  58.82353% {
-    clip: rect(26px, 280px, 7px, 0); }
-  64.70588% {
-    clip: rect(21px, 280px, 5px, 0); }
-  70.58824% {
-    clip: rect(34px, 280px, 31px, 0); }
-  76.47059% {
-    clip: rect(13px, 280px, 39px, 0); }
-  82.35294% {
-    clip: rect(20px, 280px, 35px, 0); }
-  88.23529% {
-    clip: rect(9px, 280px, 12px, 0); }
-  94.11765% {
-    clip: rect(8px, 280px, 39px, 0); }
-  100% {
-    clip: rect(12px, 280px, 26px, 0); } }
-  .home-link:before, .home-link:after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background: black;
-    clip: rect(0, 0, 0, 0); }
-  .home-link:after {
-    left: 2px;
-    text-shadow: -1px 0 #ffed00;
-    animation: home-link-anim-1 2s infinite linear alternate-reverse; }
-  .home-link:before {
-    left: -2px;
-    text-shadow: 2px 0 #009fe3;
-    animation: home-link-anim-2 3s infinite linear alternate-reverse; }
+  /*           @include textGlitch("home-link", 17, black, black, $yellow, $blue, 280, 43);*/ }
 
 /*# sourceMappingURL=main.css.map */

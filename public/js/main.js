@@ -12,7 +12,10 @@ $(document).ready(function() {
 
 
 */
-
+    $('.js--modal-postit-close').click(function(e) {
+e.preventDefault();
+$('.modal-postit').fadeOut();
+    });
     $.expr[":"].contains = $.expr.createPseudo(function(arg) {
         return function(elem) {
             return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
