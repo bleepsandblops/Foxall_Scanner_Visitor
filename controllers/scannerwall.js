@@ -275,11 +275,13 @@ exports.getSearch = function(req, res, next) {
     request = require('request');
     var ScannerImage = require('../models/ScannerImage');
     var ScannerTimeline = require('../models/ScannerTimeline');
+    var daysArray = new Array();
 
     for(i=0;i<15;i++) {
                     var date = new Date();
                     date.setDate(date.getDate() - i);
                     var day = date.toDateString();
+                    console.log(day);
                                         daysArray.push(day);
 
 }
