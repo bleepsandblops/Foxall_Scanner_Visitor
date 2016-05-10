@@ -5,7 +5,10 @@ block content
   .page-header
     h2 
       if env == 'public'  
-        a(href="/", class="wall-header") Publishing Rooms     
+        .menu-button-container
+          a(href="/", class="menu-button wall-header") Publishing Rooms 
+          a(href="/", class="menu-button wall-header") Publishing Rooms 
+          a(href="/", class="menu-button wall-header") Publishing Rooms
       if env == 'exhibition'          
         a(href="/bodyscan") Publishing Rooms 
       | / 

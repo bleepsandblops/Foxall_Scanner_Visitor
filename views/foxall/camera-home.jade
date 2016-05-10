@@ -3,7 +3,10 @@ extends ../layout
 block content
   .page-header
     h2 
-      a(href="/") Publishing Rooms
+      .menu-button-container.menu-button-container--small
+        a(href="/", class="menu-button ") Publishing Rooms 
+        a(href="/", class="menu-button ") Publishing Rooms 
+        a(href="/", class="menu-button ") Publishing Rooms
       | / Camera List
     if env == 'exhibition'
       a(href="/camera") Scan  

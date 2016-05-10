@@ -3,7 +3,10 @@ extends ../layout
 block content
   .page-header
     h2 
-      a(href="/") Publishing Rooms 
+      .menu-button-container.menu-button-container--small
+        a(href="/", class="menu-button ") Publishing Rooms 
+        a(href="/", class="menu-button ") Publishing Rooms 
+        a(href="/", class="menu-button ") Publishing Rooms 
       | / Scanner Camera: 
       span(class="colour") #{camera.name} - #{camera.friendlyTimeline} 
     .print-link http://publishingrooms.com/camera/#{camera.id}

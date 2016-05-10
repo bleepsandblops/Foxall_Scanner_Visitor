@@ -3,9 +3,15 @@ block content
   .page-header
     h2
       if env == 'exhibition'
-        a(href="/scannerwall", class="wall-header") Publishing Rooms 
+        .menu-button-container
+          a(href="/scannerwall", class="menu-button wall-header") Publishing Rooms 
+          a(href="/scannerwall", class="menu-button wall-header") Publishing Rooms 
+          a(href="/scannerwall", class="menu-button wall-header") Publishing Rooms 
       if env == 'public'  
-        a(href="/", class="wall-header") Publishing Rooms 
+        .menu-button-container
+          a(href="/", class="menu-button wall-header") Publishing Rooms 
+          a(href="/", class="menu-button wall-header") Publishing Rooms 
+          a(href="/", class="menu-button wall-header") Publishing Rooms 
       span() / 
         a(href="/scannerwall", class="") Wall Scan 
       span() / 
