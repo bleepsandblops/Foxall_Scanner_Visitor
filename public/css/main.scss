@@ -313,21 +313,24 @@ $blue: #009fe3;
     width: 350px;
     display: block;
     text-decoration: none;
+
     &:hover {
         text-decoration: none;
     }
+
     padding: 4px;
     text-align: center;
     margin-bottom: 40px;
+}
 
-}
 .button-container {
-     &:nth-child(2n) {
+    &:nth-child(2n) {
         .home-link {
-        background-color: $yellow;
+            background-color: $yellow;
         }
-    }   
+    }
 }
+
 body {
     background-color: #D8D8D8;
 
@@ -651,7 +654,7 @@ h2 {
 
 .js--time-select, .js--day-select {
     display: block;
-    margin-bottom:20px;
+    margin-bottom: 20px;
     -webkit-column-count: 4;
 
     /* Chrome, Safari, Opera */
@@ -672,94 +675,192 @@ h2 {
     }
 }
 
-
-
 .menu-button-container {
-    cursor: pointer; cursor: hand;
-      position: relative;
-    
-     width: 280px;
+    cursor: pointer;
+    cursor: hand;
+    position: relative;
+    width: 280px;
     height: 27px;
     display: inline-block;
     -webkit-perspective: 800px;
     perspective: 800px;
-  .menu-button{
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    transition: all .2s ease;
-    border-radius: 2px;
-  }
-  .menu-button:last-of-type{
-    
-    z-index: 80;
-  }
-  .menu-button:nth-last-of-type(2){
-    
-    z-index: 90;
-  }
-  .menu-button:first-of-type{
-    
-    z-index: 100;
-  }
-  &:hover{
-    .menu-button:first-of-type{
-      transform: rotateX(-20deg) translateZ(0px);
+
+    .menu-button {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        transition: all .2s ease;
+        border-radius: 2px;
     }
-    .menu-button:nth-last-of-type(2){
-      transform: rotateX(-20deg) translateZ(-100px);
+
+    .menu-button:last-of-type {
+        z-index: 80;
     }
-    .menu-button:last-of-type{
-      transform: rotateX(-20deg) translateZ(-200px);
+
+    .menu-button:nth-last-of-type(2) {
+        z-index: 90;
     }
-  }
+
+    .menu-button:first-of-type {
+        z-index: 100;
+    }
+
+    &:hover {
+        .menu-button:first-of-type {
+            transform: rotateX(-20deg) translateZ(0px);
+        }
+
+        .menu-button:nth-last-of-type(2) {
+            transform: rotateX(-20deg) translateZ(-100px);
+        }
+
+        .menu-button:last-of-type {
+            transform: rotateX(-20deg) translateZ(-200px);
+        }
+    }
 }
 
-
-
-.button-container{
-  cursor: pointer; cursor: hand;
-      position: relative;
+.button-container {
+    cursor: pointer;
+    cursor: hand;
+    position: relative;
     margin: 40px auto;
-     width: 280px;
+    width: 280px;
     height: 43px;
     -webkit-perspective: 800px;
     perspective: 800px;
-  .home-button{
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    transition: all .2s ease;
-    border-radius: 2px;
-  }
-  .home-button:last-of-type{
-    
-    z-index: 80;
-  }
-  .home-button:nth-last-of-type(2){
-    
-    z-index: 90;
-  }
-  .home-button:first-of-type{
-    
-    z-index: 100;
-  }
-  &:hover{
-    .home-button:first-of-type{
-      transform: rotateX(-20deg) translateZ(0px);
+
+    .home-button {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        transition: all .2s ease;
+        border-radius: 2px;
     }
-    .home-button:nth-last-of-type(2){
-      transform: rotateX(-20deg) translateZ(-100px);
+
+    .home-button:last-of-type {
+        z-index: 80;
     }
-    .home-button:last-of-type{
-      transform: rotateX(-20deg) translateZ(-200px);
+
+    .home-button:nth-last-of-type(2) {
+        z-index: 90;
     }
-  }
+
+    .home-button:first-of-type {
+        z-index: 100;
+    }
+
+    &:hover {
+        .home-button:first-of-type {
+            transform: rotateX(-20deg) translateZ(0px);
+        }
+
+        .home-button:nth-last-of-type(2) {
+            transform: rotateX(-20deg) translateZ(-100px);
+        }
+
+        .home-button:last-of-type {
+            transform: rotateX(-20deg) translateZ(-200px);
+        }
+    }
 }
+
 .menu-button-container--small {
-    width:247px;
+    width: 247px;
+}
+
+.modal-postit {
+    position: fixed;
+    display: none;
+    width: 300px;
+    height: 300px;
+    background-color: $yellow;
+    top: 100px;
+    right: 100px;
+
+    &:hover {
+        background-color: $blue;
+        color: white;
+    }
+}
+
+.modal-postit--inner {
+    width: 90%;
+    padding: 20px;
+}
+
+.modal-postit-close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 25px;
+
+    &:hover {
+        text-decoration: none;
+    }
+}
+
+/*
+  (TEXT) PARAMS
+  =================
+  1. Namespace
+  2. Intensity
+  3. Text color
+  4. Background color (flat)
+  5. Highlight #1 color
+  6. Highlight #2 color
+  7. Width (px)
+  8. Height (px)
+*/
+
+@mixin textGlitch($name, $intensity, $textColor, $background, $highlightColor1, $highlightColor2, $width, $height) {
+    color: $textColor;
+    position: relative;
+
+    $steps: $intensity;
+
+    // Ensure the @keyframes are generated at the root level
+    @at-root {
+        // We need two different ones
+        @for $i from 1 through 2 {
+            @keyframes #{$name}-anim-#{$i} {
+                @for $i from 0 through $steps {
+                    #{percentage($i * 1 / $steps)} {
+                        clip: rect(random($height) + px, $width + px, random($height) + px, 0);
+                    }
+                }
+            }
+        }
+    }
+
+    &:before,
+    &:after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: $background;
+        clip: rect(0, 0, 0, 0);
+    }
+
+    &:after {
+        left: 2px;
+        text-shadow: -1px 0 $highlightColor1;
+        animation: #{$name}-anim-1 2s infinite linear alternate-reverse;
+    }
+
+    &:before {
+        left: -2px;
+        text-shadow: 2px 0 $highlightColor2;
+        animation: #{$name}-anim-2 3s infinite linear alternate-reverse;
+    }
+}
+
+        .home-link {
+            @include textGlitch("home-link", 17, black, black, $yellow, $blue, 280, 43);
 }
