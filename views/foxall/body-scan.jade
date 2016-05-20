@@ -18,16 +18,16 @@ block content
   .body-images.js--body-images
     span(class="js--body-image-1")
       if images[0]
-        img(class="body-image js--body-image", src="https://s3-eu-west-1.amazonaws.com/foxall-publishing-rooms/#{images[0].path}")
+        img(class="body-image js--body-image", onerror="this.src='https://s3-eu-west-1.amazonaws.com/foxall-publishing-rooms/errorImage.jpg'", src="https://s3-eu-west-1.amazonaws.com/foxall-publishing-rooms/#{images[0].path}")
     span(class="js--body-image-2")
       if images[1]
-        img(class="body-image js--body-image ", src="https://s3-eu-west-1.amazonaws.com/foxall-publishing-rooms/#{images[1].path}")
+        img(class="body-image js--body-image ", onerror="this.src='https://s3-eu-west-1.amazonaws.com/foxall-publishing-rooms/errorImage.jpg'", src="https://s3-eu-west-1.amazonaws.com/foxall-publishing-rooms/#{images[1].path}")
     span(class="js--body-image-3")
       if images[2]
-        img(class="body-image js--body-image ", src="https://s3-eu-west-1.amazonaws.com/foxall-publishing-rooms/#{images[2].path}")
+        img(class="body-image js--body-image ", onerror="this.src='https://s3-eu-west-1.amazonaws.com/foxall-publishing-rooms/errorImage.jpg'", src="https://s3-eu-west-1.amazonaws.com/foxall-publishing-rooms/#{images[2].path}")
     span(class="js--body-image-4")
       if images[3]
-        img(class="body-image js--body-image ", src="https://s3-eu-west-1.amazonaws.com/foxall-publishing-rooms/#{images[3].path}")  
+        img(class="body-image js--body-image ", onerror="this.src='https://s3-eu-west-1.amazonaws.com/foxall-publishing-rooms/errorImage.jpg'", src="https://s3-eu-west-1.amazonaws.com/foxall-publishing-rooms/#{images[3].path}")  
 
 
   video(class="site-video", autoplay, loop, muted, src="/videos/publishingrooms.mp4")
