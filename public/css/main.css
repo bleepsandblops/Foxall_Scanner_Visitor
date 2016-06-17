@@ -9235,7 +9235,7 @@ a {
   .footer-links {
     float: none;
     clear: both;
-    text-align: left; } }
+    text-align: center; } }
 
 .wall footer {
   padding-left: 30px; }
@@ -9478,6 +9478,9 @@ h2 {
   .modal-postit:hover {
     background-color: #009fe3;
     color: white; }
+  @media screen and (max-width: 600px) {
+    .modal-postit {
+      display: none; } }
 
 .modal-postit--inner {
   padding: 20px; }
